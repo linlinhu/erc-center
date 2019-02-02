@@ -1,0 +1,56 @@
+<style>
+#volunteer-assess-panel .sub-title {
+	line-height: 25px;
+	padding: 8px;
+	margin-left: 8px;
+	font-size: 16px;
+	font-weight: bold;
+}
+#volunteer-assess-panel input[name="procession-choosen"] {
+	vertical-align: sub;
+	margin-right: 5px;
+}
+
+#volunteer-assess-panel .list-group {
+	height: 300px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+#volunteer-assess-panel .list-group > li,
+#volunteer-assess-panel .m-r-md {
+	cursor: pointer;
+}
+
+
+#volunteer-assess-panel .list-group > li.selected {
+	background-color: #eee;
+	border-radius: 0;
+}
+</style>
+<script type="text/html" id="volunteer_assess_form_tpl">
+<input type="hidden" name="trainId" role="user-params">
+<input type="hidden" name="personId" role="user-params">
+<div class="m-r-md">
+	<input type="text" name="score" value="" class="dial" role="user-params">
+</div>
+<button type="submit" class="btn btn-primary" style="margin-top: 20px;">保存</button>
+</script>
+<div class="wrapper-content hide" id="volunteer-assess-panel">
+	<div class="row">
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">1. 选择应急队伍</div>
+			<ul class="list-group procession-datas"></ul>
+	        <div id="volunteer-assess-procession-page"></div>
+		</div>
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">2. 选择志愿者</div>
+			<ul class="list-group volunteer-datas">请选择应急队伍进行查询</ul>
+	        <div id="volunteer-assess-volunteer-page"></div>
+			
+		</div>
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">3. 评估打分</div>
+			<form class="volunteer-assess-form text-center">请选择志愿者进行评估</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,201 @@
+<!-- 应急演练点评 -->
+<div class="row hide" id="emergency-rehearsal-comment-panel" style="margin:0">
+	<div class="col-sm-12">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-content" style="border:0" id="emergency-rehearsal-view"></div>
+		</div>
+	</div>
+</div>	
+<script id="emergencyRehearsalTpl" type="text/html">
+	{{# if(d.comments && d.comments.length > 0){ }}
+	<div class="comments">
+      	<ul>
+		{{# layui.each(d.comments, function(index, item){ }}
+       		<li>
+	        	<h5 class="comment-title">发现问题</h5>
+	        	<div class="comment-text">{{item.defect}}</div>
+	        	<h5 class="comment-title">演练总结</h5>
+	        	<div class="comment-text">{{item.review}}</div>
+	        	<p class="text-right">{{item.chargePersonName}} {{new Date(item.createTime).Format('yyyy-MM-dd hh:mm')}}</p>
+        	</li>
+		{{# }) }}
+       	</ul>
+   	</div>
+	{{# } else { }}
+		暂无点评
+	{{# } }}
+	{{# if(d.submit=="true"){ }}
+	<form method="get" class="form-horizontal" id="emergency-rehearsal-comment-form">
+		<input type="hidden" name="id" role="user-params">
+    	<div class="form-group">
+        	<label class="col-sm-3 control-label">发现问题</label>
+            <div class="col-sm-9">
+				<textarea class="form-control" type="text" name="defect"></textarea>
+        	</div>
+    	</div>
+		<div class="form-group">
+        	<label class="col-sm-3 control-label">演练总结</label>
+            <div class="col-sm-9">
+				<textarea class="form-control" type="text" name="review"></textarea>
+        	</div>
+    	</div>
+		
+    	<div class="form-group">
+        	<div class="col-sm-10 col-sm-offset-2 text-right">
+            	<button class="btn btn-primary" type="submit">提交</button>
+       		</div>
+        </div>	
+	</form>
+{{# } }}
+</script>
+
+<!-- 应急演练 志愿者点评 -->
+<style>
+.emergency-rehearsal-open .sub-title {
+	padding:15px 5px 0;
+	font-size:16px;
+}
+.emergency-rehearsal-open .procession-datas {
+	padding-left:10px;
+} 
+.emergency-rehearsal-open .row {
+	margin:0!important;
+}
+.procession-datas h5{
+	padding:5px;
+	cursor:pointer;
+}
+.procession-datas p {
+	padding:5px 5px 5px 15px;
+	cursor:pointer;
+}
+.procession-datas .actived , .volunteer-datas .actived{
+	color:#2480cc;
+}
+.volunteer-datas p {
+	padding:5px;
+	cursor:pointer;
+}
+.comment-datas ul {
+	height:370px;
+	overflow:auto;
+}
+.comment-datas ul li {
+	padding:2px 0;
+	padding-bottom:2px;
+	border-bottom: 1px solid #eeeeee;
+}
+.comment-datas ul li:last-child{
+	border-bottom: none;
+}
+.comment-datas li  h5, .comment-datas li div {
+	padding: 2px 20px 2px 10px;
+}
+</style>
+<!-- 应急演练 添加志愿者或队伍评分 -->
+<div class="row hide" id="er-member-comment-form-panel" style="margin:0">
+	<div class="col-sm-12">
+	    <div class="ibox float-e-margins">
+	        <form method="get" class="form-horizontal">
+		    	<div class="form-group">
+		        	<label class="col-sm-3 control-label">打分</label>
+		            <div class="col-sm-9">
+						<div class="m-r-md">
+							<input type="text" name="score" value="60" class="dial" role="user-params">
+						</div>
+		        	</div>
+		    	</div>
+				<div class="form-group">
+		        	<label class="col-sm-3 control-label">点评</label>
+		            <div class="col-sm-9">
+						<textarea class="form-control" type="text" name="evaluate"></textarea>
+		        	</div>
+		    	</div>
+				
+		    	<div class="form-group">
+		        	<div class="col-sm-10 col-sm-offset-2 text-right">
+		            	<button class="btn btn-primary" type="submit">提交</button>
+		       		</div>
+		        </div>	
+			</form>
+		</div>
+	</div>
+</div>	
+	
+<!-- 应急演练 志愿者点评 志愿者选取 -->
+<script type="text/html" id="erv_team_datas_tpl">
+{{# layui.each(d, function(index, team){ }}
+<li>
+	<div class="team-pro">
+		<h5 data-teamId="{{team.teamId}}"><i class="fa fa-angle-left text-primary"></i>&nbsp;{{team.teamName}}</h5>
+		<div class="team-items">
+			{{# layui.each(team.subTeams, function(index, item){ }}
+			<p class="subTeam" data-id="{{item.gid}}">{{item.name}}</p>
+			{{# }) }}
+			<p class="volunteer">个人志愿者</p>
+		</div>
+	</div>
+</li>
+{{# }) }}
+</script>
+
+<!-- 应急演练  评分列表 -->
+<script type="text/html" id="er_comments_datas_tpl">
+<ul class="list-group ">
+{{# if(d.comments && d.comments.length > 0){ }}
+	{{# layui.each(d.comments, function(index, item){ }}
+	<li class="row">
+      	<h5 class="comment-title col-sm-12">评分: {{item.score}}</h5>
+      	<h5 class="comment-title col-sm-3">点评: </h5>
+      	<div class="comment-text col-sm-12">{{item.evaluate}}</div>
+      	<div class="text-right col-sm-12">{{item.chargePersonName}} {{new Date(item.lastModifyTime).Format('yyyy-MM-dd hh:mm')}}</div>
+	</li>
+	{{# }) }}
+</ul>
+{{# } else { }}
+	暂无数据
+{{# } }}
+</ul>
+{{# if(d.submit && d.submit=="true"){ }}
+<div class="text-right">
+	<button class="btn btn-primary" style="margin:10px 20px;">添加评估</button>
+</div>	
+{{# } }}
+</script>
+
+
+<div class="wrapper-content hide" id="erv-comment-panel">
+	<div class="row">
+		<div class="col-sm-3 no-padding">
+			<div class="sub-title">1. 选择团队</div>
+			<ul class="list-group procession-datas"></ul>
+	        <div id="erv-comment-procession-page"></div>
+		</div>
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">2. 选择志愿者</div>
+			<div class="volunteer-datas">请选择团队进行查询</div>
+		</div>
+		<div class="col-sm-5 no-padding">
+			<div class="sub-title">3. 评估打分</div>
+			<div class="comment-datas">请选择志愿者进行查询/评估</div>
+		</div>
+	</div>
+</div>
+
+<!-- 应急演练 队伍点评 -->
+<style>
+
+</style>
+<div class="wrapper-content hide" id="ert-comment-panel">
+	<div class="row">
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">1. 选择应急队伍</div>
+			<ul class="list-group procession-datas"></ul>
+	        <div id="ert-comment-procession-page"></div>
+		</div>
+		<div class="col-sm-8 no-padding">
+			<div class="sub-title">2. 评估打分</div>
+			<div class="comment-datas row">请选择团队进行评估</div>
+		</div>
+	</div>
+</div>

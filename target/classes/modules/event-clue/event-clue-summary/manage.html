@@ -1,0 +1,425 @@
+<style>
+
+    .engine .h-left {
+        font-size: 16px;
+        padding: 42px 20px 20px 20px;
+    }
+
+    .engine .ff-remarks {
+        clear: both;
+        padding: 10px 20px 20px 490px;
+    }
+
+    .engine .tf-remarks {
+        clear: both;
+        padding: 10px 20px 20px 650px;
+    }
+
+    .engine .h-remarks {
+        font-size: 16px;
+        color: red;
+    }
+
+    .engine .level-content-middle-top {
+        padding: 15px 20px 20px 88px;
+        min-height: 50%;
+        border-width: 1px;
+    }
+
+    .engine .level-content-middle-bottom {
+        padding: 15px 20px 20px 88px;
+        min-height: 50%;
+        border-width: 1px;
+    }
+
+    .engine .score-content-middle-top {
+        padding: 15px 20px 20px 240px;
+        min-height: 50%;
+        border-width: 1px;
+    }
+
+    .engine .score-content-middle-bottom {
+        padding: 15px 20px 20px 179px;
+        min-height: 50%;
+        border-width: 1px;
+    }
+
+    .engine div {
+        height: 100%;
+    }
+
+    .engine .submit-btn {
+        clear: both;
+        padding: 15px 20px 20px 784px;
+    }
+
+    .engine .h-right {
+        padding: 48px 0px;
+    }
+
+</style>
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- 志愿者职能评估引擎模块 -->
+            <div class="engine">
+                <div class="ibox-title">
+                    <h5>志愿者职能评估引擎</h5>
+                </div>
+                <div class="ibox-content">
+                    <h5>等级评分制</h5>
+                    <form method="post" class="engine-set-up" id="functionForm">
+                        <#if (function.value)??>
+                            <#assign json="${function.value}"?eval />
+                        </#if>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-2 control-label text-right"><h5 class="h-left">职能评分=</h5></div>
+                            <div class="col-sm-4">
+                                <div class="level-content-middle-top">
+                                    <input class="engine-input" placeholder="最低分" type="text" id="ff-minimum-score"
+                                           name="initScore" value="${(json.initScore)!''}">
+                                    +&nbsp;<input class="engine-input" placeholder="等级平均分" type="text" id="ff-average-score"
+                                                  name="levelScore" value="${(json.levelScore)!''}">&nbsp;*N
+                                </div>
+                                <div style="width:100%;padding:1px 0px;background:lightgray"></div>
+                                <div class="level-content-middle-bottom">
+                                    <input class="engine-input" placeholder="最低分" type="text" id="ff-minimum-score-view"
+                                           value="${(json.initScore)!''}" readonly="readonly">
+                                    +&nbsp;<input class="engine-input" placeholder="等级平均分" type="text" id="ff-average-score-view"
+                                                  value="${(json.levelScore)!''}" readonly="readonly">&nbsp;*5
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5 class="h-right">*100</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="ff-remarks">
+                                <h5 class="h-remarks">注：您只需要填入等级评分制最低分，和每个等级的平均分即可，N为实际等级</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <button class="btn btn-primary" id="functionBtn" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- 培训评估引擎模块 -->
+            <div class="engine">
+                <div class="ibox-title">
+                    <h5>培训评估引擎</h5>
+                </div>
+                <div class="ibox-content">
+                    <h5>分数评分制</h5>
+                    <form method="post" class="engine-set-up" id="trainForm">
+                        <#if (train.value)??>
+                            <#assign json="${train.value}"?eval />
+                        </#if>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-2 control-label text-right"><h5 class="h-left">培训评分=</h5></div>
+                            <div class="col-sm-4">
+                                <div class="score-content-middle-top">
+                                    N
+                                </div>
+                                <div style="width:100%;padding:1px 0px;background:lightgray"></div>
+                                <div class="score-content-middle-bottom">
+                                    <input class="engine-input" placeholder="总分" type="text" name="totalScore"
+                                           value="${(json.totalScore)!''}">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5 class="h-right">*100</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="tf-remarks">
+                                <h5 class="h-remarks">注：您只需要填入分值总分即可，M为实际得分</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- 道德评估引擎模块 -->
+            <div class="engine">
+                <div class="ibox-title">
+                    <h5>道德评估引擎</h5>
+                </div>
+                <div class="ibox-content">
+                    <h5>等级评分制</h5>
+                    <form method="post" class="engine-set-up" id="moralityForm">
+                        <#if (morality.value)??>
+                            <#assign json="${morality.value}"?eval />
+                        </#if>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-2 control-label text-right"><h5 class="h-left">道德评分=</h5></div>
+                            <div class="col-sm-4">
+                                <div class="level-content-middle-top">
+                                    <input class="engine-input" placeholder="最低分" type="text" id="mf-minimum-score"
+                                           name="initScore" value="${(json.initScore)!''}"
+                                    >
+                                    +&nbsp;<input class="engine-input" placeholder="等级平均分" type="text" id="mf-average-score"
+                                                  name="levelScore" value="${(json.levelScore)!''}">&nbsp;*N
+                                </div>
+                                <div style="width:100%;padding:1px 0px;background:lightgray"></div>
+                                <div class="level-content-middle-bottom">
+                                    <input class="engine-input" placeholder="最低分" type="text" id="mf-minimum-score-view"
+                                           value="${(json.initScore)!''}">
+                                    +&nbsp;<input class="engine-input" placeholder="等级平均分" type="text" id="mf-average-score-view"
+                                                  value="${(json.levelScore)!''}">&nbsp;*5
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5 class="h-right">*100</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="ff-remarks">
+                                <h5 class="h-remarks">注：您只需要填入等级评分制最低分，和每个等级的平均分即可，N为实际等级</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- 活跃度评估引擎模块 -->
+            <div class="engine">
+                <div class="ibox-title">
+                    <h5>活跃度评估引擎</h5>
+                </div>
+                <div class="ibox-content">
+                    <h5>等级评分制</h5>
+                    <form method="post" class="engine-set-up" id="activityForm">
+                        <div class="form-group">
+                            <#if (activity.value)??>
+                                <#assign json="${activity.value}"?eval />
+                            </#if>
+                            <div class="col-sm-2 col-sm-offset-2 control-label text-right"><h5 class="h-left">活跃度评分=</h5></div>
+                            <div class="col-sm-4">
+                                <div class="level-content-middle-top">
+                                    <input class="engine-input" placeholder="最低分" type="text" id="af-minimum-score"
+                                           name="initScore" value="${(json.initScore)!''}"
+                                    >
+                                    +&nbsp;<input class="engine-input" placeholder="等级平均分" type="text" id="af-average-score"
+                                                  name="levelScore" value="${(json.levelScore)!''}">&nbsp;*N
+                                </div>
+                                <div style="width:100%;padding:1px 0px;background:lightgray"></div>
+                                <div class="level-content-middle-bottom">
+                                    <input class="engine-input" placeholder="最低分" type="text" id="af-minimum-score-view"
+                                           value="${(json.initScore)!''}">
+                                    +&nbsp;<input class="engine-input" placeholder="等级平均分" type="text"
+                                                  id="af-average-score-view" value="${(json.levelScore)!''}">&nbsp;*5
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5 class="h-right">*100</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="ff-remarks">
+                                <h5 class="h-remarks">注：您只需要填入等级评分制最低分，和每个等级的平均分即可，N为实际等级</h5>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#ff-minimum-score").change(function () {
+            var v = $("#ff-minimum-score").val();
+            $("#ff-minimum-score-view").val(v);
+        });
+
+        $("#ff-average-score").change(function () {
+            var v = $("#ff-average-score").val();
+            $("#ff-average-score-view").val(v);
+        });
+
+        $("#mf-minimum-score").change(function () {
+            var v = $("#mf-minimum-score").val();
+            $("#mf-minimum-score-view").val(v);
+        });
+
+        $("#mf-average-score").change(function () {
+            var v = $("#mf-average-score").val();
+            $("#mf-average-score-view").val(v);
+        });
+
+        $("#af-minimum-score").change(function () {
+            var v = $("#af-minimum-score").val();
+            $("#af-minimum-score-view").val(v);
+        });
+
+        $("#af-average-score").change(function () {
+            var v = $("#af-average-score").val();
+            $("#af-average-score-view").val(v);
+        });
+
+    });
+    <!-- 志愿者职能评估引擎设置 -->
+    let functionForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#functionForm';
+            $(formSelector).validate({
+                rules: {
+                    initScore: {
+                        required: true,
+                    },
+                    levelScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    initScore: {
+                        required: icon + "请输入最低分",
+
+                    },
+                    levelScore: {
+                        required: icon + "请输入等级平均分",
+                    },
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationFunction',
+                        'params': data
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    functionForm.init();
+
+    <!-- 培训评估引擎设置 -->
+    let trainForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#trainForm';
+            $(formSelector).validate({
+                rules: {
+                    totalScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    totalScore: {
+                        required: icon + "请输入总分",
+
+                    }
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationTrain',
+                        'params': data
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    trainForm.init();
+
+    <!-- 道德评估引擎设置 -->
+    let moralityForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#moralityForm';
+            $(formSelector).validate({
+                rules: {
+                    initScore: {
+                        required: true,
+                    },
+                    levelScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    initScore: {
+                        required: icon + "请输入最低分",
+
+                    },
+                    levelScore: {
+                        required: icon + "请输入等级平均分",
+                    },
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationMorality',
+                        'params': data
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    moralityForm.init();
+
+    <!-- 活跃度评估引擎设置 -->
+    let activityForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#activityForm';
+            $(formSelector).validate({
+                rules: {
+                    initScore: {
+                        required: true,
+                    },
+                    levelScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    initScore: {
+                        required: icon + "请输入最低分",
+
+                    },
+                    levelScore: {
+                        required: icon + "请输入等级平均分",
+                    },
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationActivity',
+                        'params': data
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    activityForm.init();
+
+</script>

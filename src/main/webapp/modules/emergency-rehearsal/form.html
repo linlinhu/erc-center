@@ -1,0 +1,276 @@
+<#setting datetime_format='yyyy-MM-dd HH:mm:ss'>
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><#if info??>编辑<#else>添加</#if>应急演练</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('index')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+               		 <form method="get" class="form-horizontal" id="emergency-rehearsal-form">
+             		 	<input type="hidden" name="id" role="user-params">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">演练名称</label>
+                            <div class="col-sm-10">
+								<input class="form-control input-choose" placeholder="输入演练名称" type="text" name="title" role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">演练类型</label>
+                            <div class="col-sm-10">
+                            	<input type="hidden" name="eventType" role="user-params">
+								<input class="form-control rehearsal-cate-picker" placeholder="输入演练类型" type="text" name="eventTypeName" role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">演练区域</label>
+                            <div class="col-sm-10">
+                            	<input type="hidden" name="regionId" role="user-params">
+								<input class="form-control region-choosen-click"  type="text" name='regionName' placeholder="请选择演练区域" readyOnly role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">演练地点</label>
+                            <div class="col-sm-10">
+								<input class="form-control input-choose" placeholder="输入演练地点" type="text" name="address" role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开始时间</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control " id="emergency-rehearsal-startTime" type="text" placeholder="请选择时间" name="startTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">结束时间</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" id="emergency-rehearsal-endTime" type="text" placeholder="请选择时间" name="endTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">指挥员</label>
+                            <div class="col-sm-10">
+                            <input class="form-control" type="hidden" name='chargePersonIds' role="user-params">
+								<input class="form-control staff-choosen-click"  type="text" name='chargePersonNames' placeholder="请选择指挥员" role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group after-validate">
+                            <label class="col-sm-2 control-label">演练简介</label>
+                            <div class="col-sm-10">
+								<textarea class="form-control" name="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+let mergencyRehearsalInfo = null,mergencyRehearsalSetTime = null;
+<#if info??>
+	mergencyRehearsalInfo = JSON.parse('<@obj2json obj=info></@obj2json>');
+	CommonUtil.formDataSetAndGet({container:'#emergency-rehearsal-form',data:mergencyRehearsalInfo});
+	$('#emergency-rehearsal-form input[name="startTime"]').val('${info.startTime?number_to_datetime}');
+	$('#emergency-rehearsal-form input[name="endTime"]').val('${info.endTime?number_to_datetime}');
+	$('#emergency-rehearsal-form textarea[name="description"]').html(mergencyRehearsalInfo.description);
+	$('#emergency-rehearsal-form input[name="chargePersonNames"]').val(mergencyRehearsalInfo.commander.map(c => c.chargePersonName).join(','));
+	mergencyRehearsalSetTime = {
+		startTime: '${info.startTime?number_to_datetime}',
+		endTime: '${info.endTime?number_to_datetime}'
+	};
+</#if>
+let emergencyRehearsalForm = (function() {
+	let selectedStaffs = [],
+		eventTypeList = [],
+		selectedRegion = [],
+		formSelector = '#emergency-rehearsal-form',
+		setTime = null,
+		init = function(data){
+			let DDGetData = new DataDicInterface();
+			
+			setTime = data.setTime?data.setTime:{};
+			selectedStaffs = data.commander?data.commander:[];
+			DDGetData.getItemsByCode('event-type',function(res){
+				eventTypeList = res;
+			});
+			$(formSelector + ' .rehearsal-cate-picker').unbind('click').bind('click', function() {
+				loadEventCateItems($(this),eventCate);
+			});
+			$(formSelector + ' .region-choosen-click').unbind('click').bind('click', function() {
+				regionPicker.init({
+					checkedNodes: selectedRegion
+				}, function(res) {
+					selectedRegion = res;
+					console.log('res',res)
+					$(formSelector + ' input[name="regionId"]').val(res.id);
+					$(formSelector + ' .region-choosen-click').val(res.name);
+					$(formSelector + ' .region-choosen-click').trigger('blur');
+				});
+			});
+			$(formSelector + ' .staff-choosen-click').unbind('click').bind('click', function() {
+				StaffsChoosenTpl.init({
+					checkedNodes: selectedStaffs,
+					title: '请选择指挥员'
+				}, function(res) {
+					let ids = res.ids,
+						others = res.others,
+						lwIndex = res.layerWindowIndex;
+					
+					if(others.length > 0){
+						selectedStaffs = [];
+						others.forEach(function(value,index,array){
+							let temp = value.split('-');
+							selectedStaffs.push({
+								chargePersonId: temp[0],
+								chargePersonName: temp[1],
+								mobile: temp[2]
+							});
+						});
+						$(formSelector + ' .staff-choosen-click').val(selectedStaffs.map(r =>r.chargePersonName).join(','));
+						$(formSelector + ' .staff-choosen-click').trigger('blur');
+						layer.close(lwIndex);	
+					} else {
+						layer.msg('请选择指挥员',{inco:5});
+					}
+					
+				});
+			});
+			
+			laydate.render({
+				  elem: '#emergency-rehearsal-startTime',
+				  type: 'datetime',
+				  theme: '#0069b6',
+				  min:0,
+				  value: new Date().Format('yyyy-MM-dd hh:mm:ss'),
+				  done: function(value){
+					  setTime.startTime = value;
+					  setTimeout(function(){
+						  $('#emergency-rehearsal-startTime').trigger('blur');
+					  },20);
+				  }
+			});
+			laydate.render({
+				  elem: '#emergency-rehearsal-endTime',
+				  type: 'datetime',
+				  theme: '#0069b6',
+				  min:0, 
+				  value: new Date().Format('yyyy-MM-dd hh:mm:ss'),
+				  done: function(value){
+					  setTime.endTime = value
+					  setTimeout(function(){
+						  $('#emergency-rehearsal-endTime').trigger('blur');
+					  },20);
+				  }
+			});
+			$(formSelector).validate({
+		        rules: {
+		        	eventTypeName:{
+		        		 required: true
+		        	},
+		        	regionName: {
+		        		required: true
+		        	},
+		        	address: {
+			        	required: true,
+			        	rangelength: [1,50]
+		        	},
+		        	startTime: {
+		        		required: true
+		        	},
+		        	endTime: {
+		        		required: true
+		        	},
+		        	title: {
+		        		required: true,
+		        		rangelength: [1,20]
+		        	},
+		        	description: {
+		        		rangelength: [0,100]
+		        	},
+		        	chargePersonNames: {
+		        		required: true,
+		        	}
+		        	
+		        },
+		        messages: {
+		        	eventTypeName: {
+		        		required: icon+'请选择演练分类'
+		        	},
+		        	regionName: {
+		        		required: icon+'请选择演练区域'
+		        	},
+		        	address: {
+		        		required: icon+'请输入演练地址',
+		        		rangelength: icon + "地址长度不大于50个字符",
+		        	},
+		        	startTime: {
+		        		required: icon+'请选择开始时间',
+		        	},
+		        	endTime: {
+		        		required: icon+'请选择结束时间',
+		        	},
+		        	title: {
+		        		required: icon+'请输入演练标题',
+		        		rangelength: icon + "演练标题长度不大于20个字符",
+		        	},
+		        	description: {
+		        		rangelength: icon + "演练简介的长度不大于100个字符",
+		        	},
+		        	chargePersonNames: {
+		        		required: icon+'请选择指挥员'
+		        	}
+		        },
+		        submitHandler:function(form){
+		        	let saveObj = $(formSelector).serializeObject();
+		    
+		        	saveObj.chargePersonIds = selectedStaffs.map(r =>r.chargePersonId).join(',');
+		        	saveObj.chargePerson = selectedStaffs;
+	        		operation({
+		        		'moduleName': 'emergency-rehearsal', 
+		        		'oper': 'save',
+		        		'params': {
+		        			'data': JSON.stringify(saveObj)
+		        		}
+		        	},function(){
+		        		goPage('index',{over:false});
+		        		layer.msg('保存成功',{icon:6});
+		        	});
+		        	
+		        } 
+			});
+		},
+		eventCate = [],
+		loadEventCateItems = function(el, ec) {
+			ddItemsPicker.init({
+				items: eventTypeList,
+				pickeredLst: ec,
+				title: '事件分类选择（单选）'
+			}, function(res) {
+				console.log('res',res)
+				if (res.length == 1) {
+					el.val(res.map(r => r.name).join(','));
+					$(formSelector + ' input[name="eventType"]').val(res[0].code);
+					el.trigger('blur');
+				} else {
+					el.val('');
+				}
+				eventCate = res;
+			});
+		};
+	return {
+		init: init
+	};
+}());
+emergencyRehearsalForm.init({commander:(mergencyRehearsalInfo?mergencyRehearsalInfo.commander:null),setTime:mergencyRehearsalSetTime});
+</script>

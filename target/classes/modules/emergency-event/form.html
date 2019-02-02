@@ -1,0 +1,92 @@
+<#setting datetime_format='yyyy-MM-dd HH:mm:ss'>
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><#if info??>编辑<#else>添加</#if>事件</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('index')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+               		 <form method="get" class="form-horizontal" id="emergency-event-form">
+             		 	<input type="hidden" name="id" role="user-params">
+             		 	<input type="hidden" name="activeStatus" role="user-params">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*选择事件性质</label>
+                            <div class="col-sm-10">
+								<input class="form-control" name="eventNature" type="hidden" role="user-params">
+								<input class="form-control" type="text" name="eventNatureName" value="" readonly role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*事件分类</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" name="eventType" type="hidden" role="user-params">
+								<input class="form-control event-cate-picker" name="eventTypeName" placeholder="请选择事件分类" readOnly role="user-params">
+                            </div>
+                        </div>
+                         <div class="form-group">
+                            <label class="col-sm-2 control-label">*事件等级</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" name="eventLevel" type="hidden" role="user-params">
+								<input class="form-control event-grade-picker" name="eventLevelName" type="text" placeholder="请选择事件等级" readOnly role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group after-validate">
+                            <label class="col-sm-2 control-label">*所属区域</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" name="regionId" type="hidden" role="user-params">
+								<input class="form-control event-region-picker" name="regionName" type="text" placeholder="请选择所属区域" readOnly role="user-params">
+                            </div>
+                        </div>
+                        <div class="form-group after-validate">
+                            <label class="col-sm-2 control-label">*发生时间</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" id="emergency-event-dotime" type="text" placeholder="请选择时间" readOnly name="eventTime" role="user-params">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group after-validate">
+                            <label class="col-sm-2 control-label">*标题</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" type="text" name="title" value="" placeholder="请输入标题（小于等于40个字）" role="user-params">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group after-validate">
+                            <label class="col-sm-2 control-label">描述</label>
+                            <div class="col-sm-10">
+								<textarea class="form-control" name="description"></textarea>
+                            </div>
+                        </div>
+                         <div class="form-group after-validate">
+                            <div class="col-sm-4 col-sm-offset-2">
+								<input type="checkbox" name=" messageType" role="user-params" value="1"> 是否推送消息给区域内志愿者
+                            </div>
+                        </div>
+                        <div class="form-group after-validate">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+<#if info??>
+	let EEInfo = JSON.parse('<@obj2json obj=info></@obj2json>');
+	EEInfo.eventNatureName = (EEInfo.eventNature == 1?'真实事件':'演练事件');
+	CommonUtil.formDataSetAndGet({container:'#emergency-event-form',data:EEInfo});
+	$('#emergency-event-dotime').val('${info.eventTime?number_to_datetime}');
+	$('#emergency-event-form textarea[name="description"]').html(EEInfo.description);
+</#if>
+
+emergencyEventForm.init();
+</script>

@@ -1,0 +1,39 @@
+<#setting datetime_format='yyyy-MM-dd HH:mm:ss'>
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-sm-12">
+		<div class="tabs-container emergency-event-box">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#real-ee"
+						aria-expanded="true">真实事件</a></li>
+					<li class=""><a data-toggle="tab" href="#rehearsal-ee"
+						aria-expanded="false">演练事件</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="real-ee" class="tab-pane active">
+						<div class="panel-body"><#include "real.html"/></div>
+					</div>
+					<div id="rehearsal-ee" class="tab-pane">
+						<div class="panel-body"><#include "rehearsal.html"/></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+<#if realPages??>
+let searchData = {
+	regionId: '${regionId}',
+	regionName:'${regionName}',
+	eventType:'${eventType}',
+	eventTypeName:'${eventTypeName}',
+	eventNature:'${eventNature!1}'
+};
+CommonUtil.formDataSetAndGet({container:'#real-ee-searchform',data:searchData});
+</#if>
+let realEventFn = new emergencyEvent(),
+	rehearsalEventFn = new emergencyEvent();
+realEventFn.init({subModuleName:'real-event',eventType:'${eventType!''}'})
+rehearsalEventFn.init({subModuleName:'rehearsal-event',eventType:'${eventType!''}'})
+</script>

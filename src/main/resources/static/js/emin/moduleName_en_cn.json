@@ -1,0 +1,40 @@
+[{
+	"key": "data-dic",
+	"value": "数据字典组"	
+},{
+	"key": "region",
+	"value": "区域"	
+},{
+	"key": "org-chart",
+	"value": "组织"	
+},{
+	"key": "volunteer",
+	"value": "志愿者"	
+},{
+	"key": "staff",
+	"value": "工作人员管理"	
+},{
+	"key": "volunteer-team",
+	"value": "志愿者团队"	
+},{
+	"key": "major-team",
+	"value": "专业团队"	
+},{
+	"key": "enterprise-team",
+	"value": "企业团队"	
+},{
+	"key": "cost-sta",
+	"value": "费用管理"	
+},{
+	"key": "engine",
+	"value": "志愿者AI评估引擎"	
+},{
+	"key": "professional-ability",
+	"value": "职能分类管理"
+},{
+	"key": "emergency-rehearsal",
+	"value": "应急演练"
+},{
+	"key": "temp-procession",
+	"value": "临时队伍"
+}]

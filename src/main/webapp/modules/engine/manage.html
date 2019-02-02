@@ -1,0 +1,425 @@
+<style>
+    .formula-line {
+    	position: relative;
+		display: block;
+		height: 100px;
+    }
+    
+    .formula-line .name,
+    .formula-line .tail {
+    	line-height: 100px;
+    	width: 100px;
+    	float: left;
+    }
+    
+    .formula-line .name {
+    	text-align: right;
+    }
+    .formula-line ul.fraction {
+    	width: 310px;
+    	float: left;
+    	margin: 0 8px;
+    }
+    
+    .formula-line ul.fraction li {
+    	padding: 8px;
+		height: 50px;
+    }
+    
+    .formula-line ul.fraction li:first-child {
+    	border-bottom: 1px solid #ccc;
+    }
+    
+    
+    .formula-line ul.fraction li > input,
+    .formula-line ul.fraction li > span {
+    	display: block;
+    	float: left;
+    	margin-right: 8px;
+    }
+    
+    .formula-line ul.fraction li > span {
+    	line-height: 32px;
+    }
+    
+    
+    .formula-line ul.fraction li > input {
+    	border: 1px solid #ccc;
+    	border-radius: 3px;
+    	padding: 5px 8px;
+    	width: 100px;
+    }
+    
+    .formula-button,
+    .formula-tip{
+		margin: 10px 108px;
+    }
+
+</style>
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+        	<div class="tabs-container">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#znpg-engin" aria-expanded="true">技能评估引擎</a></li>
+					<li class=""><a data-toggle="tab" href="#pxpg-engin" aria-expanded="false">培训评估引擎</a></li>
+					<li class=""><a data-toggle="tab" href="#ddpg-engin" aria-expanded="false">素质评估引擎</a></li>
+					<li class=""><a data-toggle="tab" href="#hydpg-engin" aria-expanded="false">活跃度评估引擎</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="znpg-engin" class="tab-pane active">
+						<div class="panel-body">
+							<h5>等级评分制</h5>
+		                    <form method="post" class="engine-set-up" id="functionForm">
+		                        <#if (function.value)??>
+		                            <#assign json="${function.value}"?eval />
+		                        </#if>
+		                        <div class="formula-line">
+		                        	<div class="name">
+		                        		<span>智能评分</span>
+										<span><i class="fa fa-exchange"></i></span>
+		                        	</div>
+		                        	<ul class="fraction">
+		                        		<li>
+											<input type="text" id="ff-minimum-score" name="initScore" value="${(json.initScore)!''}" placeholder="最低分">
+											<span><i class="fa fa-plus"></i></span>
+											<input type="text" id="ff-average-score" name="levelScore" value="${(json.levelScore)!''}" placeholder="等级平均分">
+											<span><i class="fa fa-asterisk"></i></span>
+											<span>N</span>              		
+		                        		</li>
+		                        		<li>
+		                        			<input type="text" id="ff-minimum-score-view" value="${(json.initScore)!''}" placeholder="最低分" readonly="readonly">
+											<span><i class="fa fa-plus"></i></span>
+											<input type="text" id="ff-average-score-view" value="${(json.levelScore)!''}" placeholder="等级平均分" readonly="readonly">
+											<span><i class="fa fa-asterisk"></i></span>
+											<span>5</span>
+		                        		</li>
+		                        	</ul>
+		                        	<div class="tail">
+		                        		<span><i class="fa fa-asterisk"></i></span>
+		                        		<span>100</span>
+		                        	</div>
+		                        </div>
+		                        <@codeValidation codes=operationCodes operationCode="eval-fun-s">
+		                        <div class="formula-button">
+		                             <button class="btn btn-primary" id="functionBtn" type="submit">保存</button>
+		                        </div>
+		                        <div class="formula-tip text-danger">提示：您只需要填入等级评分制最低分，和每个等级的平均分即可，N为实际等级</div>
+		                        </@codeValidation>
+		                    </form>
+						</div>
+					</div>
+					<div id="pxpg-engin" class="tab-pane">
+						<div class="panel-body">
+							<h5>分数评分制</h5>
+		                    <form method="post" class="engine-set-up" id="trainForm">
+		                        <#if (train.value)??>
+		                            <#assign json="${train.value}"?eval />
+		                        </#if>
+		                        <div class="formula-line">
+		                        	<div class="name">
+		                        		<span>培训评分</span>
+										<span><i class="fa fa-exchange"></i></span>
+		                        	</div>
+		                        	<ul class="fraction">
+		                        		<li>
+											M
+		                        		</li>
+		                        		<li>
+		                        			<input placeholder="总分" type="text" name="totalScore" value="${(json.totalScore)!''}">
+		                        		</li>
+		                        	</ul>
+		                        	<div class="tail">
+		                        		<span><i class="fa fa-asterisk"></i></span>
+		                        		<span>100</span>
+		                        	</div>
+		                        </div>
+		                        <@codeValidation codes=operationCodes operationCode="eval-tra-s">
+		                        <div class="formula-button">
+		                             <button class="btn btn-primary" type="submit">保存</button>
+		                        </div>
+		                        <div class="formula-tip text-danger">提示：您只需要填入分值总分即可，M为实际得分</div>
+		                        </@codeValidation>
+		                    </form>
+						</div>
+					</div>
+					<div id="ddpg-engin" class="tab-pane">
+						<div class="panel-body">
+							<h5>等级评分制</h5>
+		                    <form method="post" class="engine-set-up" id="moralityForm">
+		                        <#if (morality.value)??>
+		                            <#assign json="${morality.value}"?eval />
+		                        </#if>
+		                        <div class="formula-line">
+		                        	<div class="name">
+		                        		<span>素质评分</span>
+										<span><i class="fa fa-exchange"></i></span>
+		                        	</div>
+		                        	<ul class="fraction">
+		                        		<li>
+											<input placeholder="最低分" type="text" id="mf-minimum-score" name="initScore" value="${(json.initScore)!''}">          		
+		                        			<span><i class="fa fa-plus"></i></span>
+											<input placeholder="等级平均分" type="text" id="mf-average-score" name="levelScore" value="${(json.levelScore)!''}">
+											<span><i class="fa fa-asterisk"></i></span>
+											<span>N</span>
+		                        		</li>
+		                        		<li>
+		                        			<input placeholder="最低分" type="text" id="mf-minimum-score-view" value="${(json.initScore)!''}">          		
+		                        			<span><i class="fa fa-plus"></i></span>
+											<input placeholder="等级平均分" type="text" id="mf-average-score-view" value="${(json.levelScore)!''}">
+											<span><i class="fa fa-asterisk"></i></span>
+											<span>5</span>
+		                        		</li>
+		                        	</ul>
+		                        	<div class="tail">
+		                        		<span><i class="fa fa-asterisk"></i></span>
+		                        		<span>100</span>
+		                        	</div>
+		                        </div>
+		                        <@codeValidation codes=operationCodes operationCode="eval-mor-s">
+		                        <div class="formula-button">
+		                             <button class="btn btn-primary" type="submit">保存</button>
+		                        </div>
+		                        <div class="formula-tip text-danger">提示：您只需要填入等级评分制最低分，和每个等级的平均分即可，N为实际等级</div>
+		                        </@codeValidation>
+		                    </form>
+						</div>
+					</div>
+					<div id="hydpg-engin" class="tab-pane">
+						<div class="panel-body">
+							<h5>等级评分制</h5>
+		                    <form method="post" class="engine-set-up" id="activityForm">
+		                            <#if (activity.value)??>
+		                                <#assign json="${activity.value}"?eval />
+		                            </#if>
+		                            
+		                            <div class="formula-line">
+			                        	<div class="name">
+			                        		<span>活跃度评分</span>
+											<span><i class="fa fa-exchange"></i></span>
+			                        	</div>
+			                        	<ul class="fraction">
+			                        		<li>
+												<input placeholder="最低分" type="text" id="af-minimum-score" name="initScore" value="${(json.initScore)!''}">          		
+			                        			<span><i class="fa fa-plus"></i></span>
+												<input placeholder="等级平均分" type="text" id="af-average-score" name="levelScore" value="${(json.levelScore)!''}">
+												<span><i class="fa fa-asterisk"></i></span>
+												<span>N</span>
+			                        		</li>
+			                        		<li>
+			                        			<input placeholder="最低分" type="text" id="af-minimum-score-view" value="${(json.initScore)!''}">          		
+			                        			<span><i class="fa fa-plus"></i></span>
+												<input placeholder="等级平均分" type="text" id="af-average-score-view" value="${(json.levelScore)!''}">
+												<span><i class="fa fa-asterisk"></i></span>
+												<span>5</span>
+			                        		</li>
+			                        	</ul>
+			                        	<div class="tail">
+			                        		<span><i class="fa fa-asterisk"></i></span>
+			                        		<span>100</span>
+			                        	</div>
+			                        </div>
+			                        <@codeValidation codes=operationCodes operationCode="eval-act-s">
+			                        <div class="formula-button">
+			                             <button class="btn btn-primary" type="submit">保存</button>
+			                        </div>
+			                        <div class="formula-tip text-danger">提示：您只需要填入等级评分制最低分，和每个等级的平均分即可，N为实际等级</div>
+			                        </@codeValidation>
+		                    </form>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#ff-minimum-score").change(function () {
+            var v = $("#ff-minimum-score").val();
+            $("#ff-minimum-score-view").val(v);
+        });
+
+        $("#ff-average-score").change(function () {
+            var v = $("#ff-average-score").val();
+            $("#ff-average-score-view").val(v);
+        });
+
+        $("#mf-minimum-score").change(function () {
+            var v = $("#mf-minimum-score").val();
+            $("#mf-minimum-score-view").val(v);
+        });
+
+        $("#mf-average-score").change(function () {
+            var v = $("#mf-average-score").val();
+            $("#mf-average-score-view").val(v);
+        });
+
+        $("#af-minimum-score").change(function () {
+            var v = $("#af-minimum-score").val();
+            $("#af-minimum-score-view").val(v);
+        });
+
+        $("#af-average-score").change(function () {
+            var v = $("#af-average-score").val();
+            $("#af-average-score-view").val(v);
+        });
+
+    });
+    <!-- 志愿者职能评估引擎设置 -->
+    let functionForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#functionForm';
+            $(formSelector).validate({
+                rules: {
+                    initScore: {
+                        required: true,
+                    },
+                    levelScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    initScore: {
+                        required: icon + "请输入最低分",
+
+                    },
+                    levelScore: {
+                        required: icon + "请输入等级平均分",
+                    },
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationFunction',
+                        'params': data
+                    }, function() {
+                    	layer.msg('职能评估引擎设置成功！', {icon: 6});
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    functionForm.init();
+
+    <!-- 培训评估引擎设置 -->
+    let trainForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#trainForm';
+            $(formSelector).validate({
+                rules: {
+                    totalScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    totalScore: {
+                        required: icon + "请输入总分",
+
+                    }
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationTrain',
+                        'params': data
+                    }, function() {
+                    	layer.msg('培训评估引擎设置成功！', {icon: 6});
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    trainForm.init();
+
+    <!-- 素质评估引擎设置 -->
+    let moralityForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#moralityForm';
+            $(formSelector).validate({
+                rules: {
+                    initScore: {
+                        required: true,
+                    },
+                    levelScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    initScore: {
+                        required: icon + "请输入最低分",
+
+                    },
+                    levelScore: {
+                        required: icon + "请输入等级平均分",
+                    },
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationMorality',
+                        'params': data
+                    }, function() {
+                    	layer.msg('素质评估引擎设置成功！', {icon: 6});
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    moralityForm.init();
+
+    <!-- 活跃度评估引擎设置 -->
+    let activityForm = (function () {
+        let init = function (p, callback) {
+            let formSelector = '#activityForm';
+            $(formSelector).validate({
+                rules: {
+                    initScore: {
+                        required: true,
+                    },
+                    levelScore: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    initScore: {
+                        required: icon + "请输入最低分",
+
+                    },
+                    levelScore: {
+                        required: icon + "请输入等级平均分",
+                    },
+                },
+                submitHandler: function (form) {
+                    var data = $(form).serializeObject();
+                    operation({
+                        'moduleName': 'engine',
+                        'oper': 'evaluationActivity',
+                        'params': data
+                    }, function() {
+                    	layer.msg('活跃度评估引擎设置成功！', {icon: 6});
+                    });
+                }
+            });
+        };
+        return {
+            init: init
+        }
+    }());
+    activityForm.init();
+
+</script>

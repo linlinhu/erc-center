@@ -1,0 +1,188 @@
+<!-- 添加志愿者团队的弹框 -->
+<div class="row hide" id="volunteerTeamPanel" style="margin:0">
+	<div class="col-sm-12">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-content" style="border:0">
+				<form method="get" class="form-horizontal">
+					<div class="form-group">
+			        	<label class="col-sm-3 control-label">*团体名称</label>
+			            <div class="col-sm-9">
+			            	<input class="form-control" type="hidden" name="id">
+			            	<input class="form-control" type="hidden" name="scope">
+							<input class="form-control" type="text" name="groupName">
+			        	</div>
+			    	</div>
+			    	<div class="form-group groupEntityName hide">
+			        	<label class="col-sm-3 control-label">*企业名称</label>
+			            <div class="col-sm-9">
+							<input class="form-control" type="text" name="groupEntityName" disabled="disabled">
+			        	</div>
+			    	</div>
+			    	<div class="form-group">
+			        	<label class="col-sm-3 control-label">*负责人</label>
+			            <div class="col-sm-9">
+							<input class="form-control" type="text" name="masterUserName">
+			        	</div>
+			    	</div>
+			    	<div class="form-group">
+			        	<label class="col-sm-3 control-label">*负责人身份证号</label>
+			            <div class="col-sm-9">
+							<input class="form-control" type="text" name="masterUserIDNumber">
+			        	</div>
+			    	</div>
+			    	<div class="form-group">
+			        	<label class="col-sm-3 control-label">*负责人联系电话</label>
+			            <div class="col-sm-9">
+							<input class="form-control" type="text" name="masterUserMobile">
+			        	</div>
+			    	</div>
+			    	<div class="form-group">
+			        	<label class="col-sm-3 control-label">电子邮箱</label>
+			            <div class="col-sm-9">
+							<input class="form-control" type="text" name="groupEmail">
+			        	</div>
+			    	</div>
+			    	<div class="form-group">
+			        	<label class="col-sm-3 control-label">联系地址</label>
+			            <div class="col-sm-9">
+							<textarea class="form-control" type="text" name="groupAddress"></textarea>
+			        	</div>
+			    	</div>
+			    	<div class="form-group mixTeam-div">
+                         <label class="col-sm-3 control-label">所属队伍</label>
+                         <div class="col-sm-9">
+                         	<input class="form-control" name="mixTeamIds" type="hidden">
+							<input class="form-control volunteerprocession-choosen-click" type="text" name="mixTeamNames" readOnly placeholder="选择所属应急队伍">
+                         </div>
+                    </div>
+			    	<div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-3">
+                        	<a class="btn btn-default hide cancel">删除</a>
+                            <button class="btn btn-primary" type="submit">保存</button>
+                        </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script id="teamDesDataTpl" type="text/html">
+	<h4 class="title"><span class="team-name">{{d.groupName}}</span>&nbsp;&nbsp;
+		<span class="mixTeamNames hide">({{d.mixTeamNames}})</span>
+		<span class="editTeam" title="编辑团体信息" data-value='{{d.string}}'><i class="fa fa-pencil text-primary"></i></span>
+	</h4>
+	<div>
+		<span class="col-sm-12">
+			<i class="fa fa-users text-info" title="成员数量"></i><span style="color:#666666">&nbsp;&nbsp;{{d.memberCount}}位</span>
+		</span>
+		<span class="col-sm-9 hide">
+			<i class="fa fa-gittip text-info" title="参与活动次数"></i><span style="color:#666666">&nbsp;&nbsp;24次</span>
+		</span>
+	</div>
+	<div class="scope hide">
+		<span class="col-sm-2">状态</span>
+		<span class="col-sm-10">
+			{{# if(d.scope == 10) { }}
+				申报中 
+			{{# }else if(d.scope == 20) { }}
+				已录用
+			{{# }else if(d.scope  ==  60) { }}
+				已淘汰
+			{{# } }}
+		</span>
+	</div>
+	<div>
+		<span class="col-sm-2">负责人</span>
+		<span class="col-sm-10">{{d.masterUserName}}（<i class="fa fa-id-card text-info" title="身份证号"></i> {{d.masterUserIDNumber}}）</span>
+	</div>
+	<div>
+		<span class="col-sm-2">联系电话</span>
+		<span class="col-sm-10">{{d.masterUserMobile}}</span>
+	</div>
+	<div>
+		<span class="col-sm-2">电子邮箱</span>
+		<span class="col-sm-10">{{d.groupEmail?d.groupEmail:'暂无'}}</span>
+	</div>
+	<div>
+		<span class="col-sm-2">联系地址</span>
+		<span class="col-sm-10">{{d.groupAddress?d.groupAddress:'暂无'}}</span>
+	</div>
+	<div class="volunteerTeamStatus-btns hide">
+		{{# if(d.scope == 10){ }}
+			<button type="button" class="btn btn-primary-outline dismissal"></i>淘汰</button>
+        	<button type="button" class="btn btn-default-outline employment"></i>录用</button>
+		{{# } else if(d.scope == 20) { }}	
+			<button type="button" class="btn btn-primary dismissal" ></i>淘汰</button>			
+		{{# } }}
+	</div>
+</script>
+<script id="teamMemberDataTpl" type="text/html">
+	{{# layui.each(d, function(index, item){ }}
+	<div class="col-sm-4 col-xs-12">
+		<div class="contact-box">
+			<label class="checkbox-inline i-checks hide">
+	        	<input type="checkbox" value="{{item.id}}">
+	        </label>
+	        <a href="javascript: ;" class="removeMember-icon" data-id="{{item.id}}"  title="删除"></a>
+			<a class="volunteerChangeTeam" data-id="{{item.id}}" alt="变更" title="变更">
+				<i class="fa fa-random text-primary"></i>
+			</a>
+	        <div class="col-sm-4 col-xs-12">
+	            <div class="text-center">
+	   				 <a href="javascript: ;" class="detail-icon" data-id="{{item.id}}" title="点击查阅详情">
+	            		<i class="img-icon avatar" style="width: 60px; height: 60px; background-image:
+	            		{{# if(item.avatar && item.avatar.picUrls && item.avatar.picUrls!=''){ }}
+	            			url('{{item.avatar.picUrls}}')
+	            		{{# }else{ }}
+	            			url('img/male.png')
+	            		{{# } }}
+	            		"></i>
+	    			</a>
+					<div class="m-t-xs font-bold">
+	                	{{# if(item.proAbilityClassTagNames && item.proAbilityClassTagNames.length > 0){ }}
+							{{item.proAbilityClassTagNames}}
+	                	{{# }  else { }}
+	                		暂未分类
+	                	{{# } }}
+	                </div>
+	            </div>
+	        </div>
+			<div class="col-sm-8 col-xs-12">
+	            <h3><strong>
+	            {{item.realName}} 
+	            <span class="editMember" onclick="goPage('form', {groupType: '{{item.groupType}}',id: '{{item.id}}',groupId: '{{item.groupId}}'})" title="编辑"><i class="fa fa-pencil text-primary"></i></span>
+	            &nbsp;
+				{{# if(item.gender == 1) { }}
+					女
+				{{# } else { }}
+					男
+				{{# } }}
+	            </strong></h3>
+	            <p><i class="fa fa-phone text-info"></i> {{item.mobile}}</p>
+	            <p class="ellipsis"><i class="fa fa-map-marker text-info"></i> {{item.contactAddr}}</p>
+	            <p class="ellipsis">
+					{{# if(item.serviceFields && item.serviceFields.length > 0){ }}
+						{{# layui.each(item.serviceFields, function(index, sf){ }}
+	                 		{{sf.name}}&nbsp;
+	                 	{{# }); }}
+	                {{# }  else { }}
+	                	未知领域	
+	                {{# } }}
+	            </p>
+				<p class="ellipsis">
+					{{# if(item.knowledgeSkills && item.knowledgeSkills.length > 0 ) { }}
+						知识技能 ：{{# layui.each(item.knowledgeSkills, function(index, ks){ }}
+	                 			{{ks.name}}&nbsp;
+	                 		{{# }); }}
+					{{# } else { }}
+						未知技能
+					{{# } }}
+	            </p>
+	            <p class="ellipsis">累计参与{{item.participationCounts?item.participationCounts:'0'}}次行动</p>
+	        </div>
+	        <div class="clearfix"></div>
+		</div>
+	</div>
+	{{# }); }}
+</script>   
+	

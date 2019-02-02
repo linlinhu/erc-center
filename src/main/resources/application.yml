@@ -1,0 +1,41 @@
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://192.168.0.202:10000/eureka/
+server:
+  port: 8112
+spring:
+  application:
+    code: erc-center
+    name: ercCenter
+  session:
+    store-type: redis
+    redis:
+      namespace: erdm
+  redis:
+    database: 3
+    host: 192.168.0.202
+    port: 7001
+    pool:
+      min-idle: 0
+      max-idle: 8
+      max-wait: -1
+      max-active: 8
+    timeout: 0
+  freemarker:
+    allow-request-override: false
+    cache: true
+    checkTemplateLocation: true
+    charset: UTF-8
+    contentType: text/html
+    exposeRequestAttributes: true
+    exposeSessionAttributes: true
+    exposeSpringMacroHelpers: false
+    suffix: .html
+    templateLoaderPath: classpath:/
+    prefer-file-system-access: false
+    settings:
+      templateExceptionHandler: ignore

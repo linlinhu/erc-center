@@ -1,0 +1,31 @@
+eureka:
+  instance:
+    ##当前CI-HOST需要在编译之前进行替换
+    ip-address: CI-HOST
+    prefer-ip-address: true
+    lease-expiration-duration-in-seconds: 8
+    lease-renewal-interval-in-seconds: 5
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:18761/eureka/
+      #defaultZone: http://192.168.0.201:8761/eureka/
+server:
+  port: 10081
+spring:
+  application:
+    name: merisWeb
+  freemarker:
+    allow-request-override: false
+    cache: true
+    checkTemplateLocation: true
+    charset: UTF-8
+    contentType: text/html
+    exposeRequestAttributes: true
+    exposeSessionAttributes: true
+    exposeSpringMacroHelpers: false
+    suffix: .html
+    templateLoaderPath: classpath:/
+    prefer-file-system-access: false
+    settings:
+      template_exception_handler: ignore
+      logTemplateExceptions: false

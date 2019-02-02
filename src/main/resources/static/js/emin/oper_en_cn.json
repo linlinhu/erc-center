@@ -1,0 +1,31 @@
+[{
+	"key": "save",
+	"value": "保存"	
+},{
+	"key": "remove",
+	"value": "删除"	
+},{
+	"key": "detail",
+	"value": "详情"	
+},{
+	"key": "saveItem",
+	"value": "保存数据项"	
+},{
+	"key": "removeItem",
+	"value": "删除数据项"
+},{
+	"key": "evaluationMorality",
+	"value": "素质评估引擎设置"
+},{
+	"key": "evaluationActivity",
+	"value": "活跃度评估引擎设置"
+},{
+	"key": "evaluationTrain",
+	"value": "培训评估引擎设置"
+},{
+	"key": "evaluationFunction",
+	"value": "职能评估引擎设置"
+},{
+	"key": "teamModify",
+	"value": "变更应急队伍设置"
+}]

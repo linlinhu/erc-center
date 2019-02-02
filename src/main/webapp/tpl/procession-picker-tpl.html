@@ -1,0 +1,68 @@
+<style>
+<!--
+
+-->
+#procession-picker-panel .sub-title {
+	line-height: 25px;
+	padding: 8px;
+	margin-left: 8px;
+	font-size: 16px;
+	font-weight: bold;
+}
+#procession-picker-panel input[name="procession-choosen"] {
+	margin-right: 5px;
+	vertical-align: text-top;
+}
+
+#procession-picker-panel .list-group > li.selected {
+	background-color: #eee;
+	border-radius: 0;
+}
+#procession-picker-panel .procession-datas > li {
+	height: 39px;
+}
+#procession-picker-panel .select-tip {
+	background-color: rgba(36,128,204, .5);
+	color: #fff;
+	padding: 3px 0;
+	text-align: center;
+	margin-top: -10px;
+}
+.vp-select-title .chk {
+	font-size: 14px;
+	color: #2480cc;
+}
+.vp-select-title .chk > input {
+	vertical-align: sub;
+}
+</style>
+
+<div class="wrapper-content hide" id="procession-picker-panel">
+	<div class="row">
+		<div class="col-sm-12 select-tip">暂无勾选记录</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">1.选择区域</div>
+			<div class="ztree-panel" style="height: 450px;">
+				<ul class="ztree" id="procession-picker-region-tree"></ul>
+			</div>
+		</div>
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title">2.选择网格</div>
+			<ul class="list-group grid-datas">请选择区域进行查询</ul>
+	        <div id="procession-picker-grid-page"></div>
+		</div>
+		<div class="col-sm-4 no-padding">
+			<div class="sub-title vp-select-title">
+				3.勾选应急队伍
+				<!-- <span class="chk"><input type="checkbox" class="selectAll"> 全选</span> -->
+			</div>
+			<ul class="list-group procession-datas">请选择网格进行查询</ul>
+	        <div id="procession-picker-procession-page"></div>
+		</div>
+	</div>
+	<div class="opers" style="height: 40px;">
+		<button type="button" class="btn btn-primary" role="choosen-close" style="float: right">确定</button>
+	</div>
+</div>

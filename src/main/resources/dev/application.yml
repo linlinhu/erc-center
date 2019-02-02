@@ -1,0 +1,28 @@
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://192.168.0.202:10000/eureka/
+server:
+  port: 8112
+spring:
+  application:
+    code: ercCenter
+    name: ercCenter
+  freemarker:
+    allow-request-override: false
+    cache: true
+    checkTemplateLocation: true
+    charset: UTF-8
+    contentType: text/html
+    exposeRequestAttributes: true
+    exposeSessionAttributes: true
+    exposeSpringMacroHelpers: false
+    suffix: .html
+    templateLoaderPath: classpath:/
+    prefer-file-system-access: false
+    settings:
+          template_exception_handler: ignore
+          logTemplateExceptions: false

@@ -1,0 +1,161 @@
+<#setting datetime_format='yyyy-MM-dd HH:mm:ss'>
+<style>
+	.tabs-container .tab-pane .panel-body {
+		min-height:0!important;
+	}
+	#emergency-rehearsal-view .comments {
+		max-height: 360px;
+		overflow: auto;
+		margin-bottom:20px;
+		padding:10px 0;
+	}
+	#emergency-rehearsal-view .comments li {
+		padding:5px 0;
+	}
+	#emergency-rehearsal-view .comments li:nth-child(n+2){
+		border-top:1px solid #eeeeee;
+	}
+</style>
+<div class="wrapper-content emergency-rehearsal">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5>应急演练</h5>
+					 <@codeValidation codes=operationCodes operationCode="add">
+					<div class="ibox-tools">
+						<a class="btn btn-primary" href="javascript:goPage('form');"
+							alt="添加" title="添加"> <i class="fa fa-plus"></i>
+						</a>
+					</div>
+					 </@codeValidation>
+				</div>
+				<@codeValidation codes=operationCodes operationCode="search">
+				<form method="get" id="emergency-rehearsal-searchform">
+					<div class="filter-line">
+						<input type="hidden" name="page" role="user-params" value="${page!'1'}">
+						<!-- <input class="form-control" type="hidden" name="regionId" role="user-params" value="${regionId!''}">
+						<input class="form-control region-choosen-click" type="text" placeholder="选择区域" name="regionName" readonly role="user-params" value="${regionName!''}"> -->
+						<input placeholder="开始时间" class="form-control" type="text" name="startTime" id="em-s-startTime" value="${startTime?number_to_datetime!''}">
+						<input placeholder="结束时间" class="form-control" type="text" name="endTime" id="em-s-endTime" value="${endTime?number_to_datetime!''}">
+						<input placeholder="关键字模糊查询" class="form-control" type="text" name="keyword" value="${keyword!''}" role="user-params">
+						<button type="button" class="btn btn-primary search">
+							<i class="fa fa-search"></i>
+						</button>
+						<button type="button" class="btn btn-default reset">
+							<i class="fa fa-refresh"></i>
+						</button>
+					</div>
+				</form>
+				</@codeValidation>
+			</div>
+			<div class="tabs-container emergency-rehearsal-box">
+				<div class="ibox float-e-margins to-be-rehearsal" style="position: relative">
+					<div class="ibox-content">
+						<#if over == 'false'>
+							<ul class="nav nav-tabs">
+								<li class="active" data-over=false><a data-toggle="tab" href="#to-be-rehearsal"
+									aria-expanded="true">待演练</a></li>
+								<li class="" data-over=true><a data-toggle="tab" href="#already-rehearsal"
+									aria-expanded="false">已演练</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="to-be-rehearsal" class="tab-pane active">
+									<div class="panel-body"><#include "to-be-rehearsal.html"/></div>
+								</div>
+								<div id="already-rehearsal" class="tab-pane">
+									<div class="panel-body"><#include "already-rehearsal.html"/></div>
+								</div>
+							</div>
+						<#else>
+							<ul class="nav nav-tabs">
+								<li class="" data-over=false><a data-toggle="tab" href="#to-be-rehearsal"
+									aria-expanded="false">待演练</a></li>
+								<li class="active" data-over=true><a data-toggle="tab" href="#already-rehearsal"
+									aria-expanded="true">已演练</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="to-be-rehearsal" class="tab-pane">
+									<div class="panel-body"><#include "to-be-rehearsal.html"/></div>
+								</div>
+								<div id="already-rehearsal" class="tab-pane active">
+									<div class="panel-body"><#include "already-rehearsal.html"/></div>
+								</div>
+							</div>
+						</#if>
+						<div class="text-right" id="emergency-rehearsal-page"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/html" id="emergency_rehearsal_datas">
+	<div class="panel-body">
+		<table class="footable table table-stripped toggle-arrow-tiny to-be-rehearsal"
+			id=real-ee-table data-page-size="10"
+			data-paging="false">
+			<thead>
+				<tr>
+					<th data-toggle="true">演练名称</th>
+					<th>分类</th>
+					<th>区域</th>
+					<th>日期</th>
+					<th>演练队伍</th>
+					<th data-hide="all">指挥员</th>
+					<th data-hide="all">演练地址</th>
+					<th data-hide="all">演练简介</th>
+					<th data-sort-ignore="true">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{# if (d.pages.resultList && d.pages.resultList.length > 0){ }}
+					{{# layui.each(d.pages.resultList, function(index, item){ }}
+						<tr>
+							<td>{{item.title}}</td>
+							<td>{{item.eventTypeName}}</td>
+							<td>{{item.regionName}}</td>
+							<td>{{new Date(item.startTime).Format("yyyy-MM-dd HH:mm:ss")}}-{{new Date(item.endTime).Format("yyyy-MM-dd HH:mm:ss")}}</td>
+							<td>演练队伍</td>
+							<td>{{d.chargePersonNames}}</td>
+							<td>{{d.address}}</td>
+							<td>{{d.description}}</td>
+							<td>
+								{{# if(d.over == false) { }}
+									<a href="javascript:goPage('form',{id:'{{item.id}}'});" title="编辑" class="edit"><i class="fa fa-pencil text-primary"></i></a>&nbsp;
+								{{# } else { }}
+									<a href="javascript:goPage('form',{id:'{{item.id}}'});" title="点评" class="comment"><i class="fa fa-commenting text-primary"></i></a>&nbsp;
+								{{# } }}
+								<a href="javascript:operation({'moduleName': 'emergency-rehearsal', 'oper': 'remove', 'params': {'id': '{{item.id}}'}});" title="删除" class="remove"><i class="fa fa-trash text-primary"></i></a>&nbsp;
+							</td>
+						</tr>
+					{{# }) }}
+		        {{# } else { }}
+		            <tr><td>暂无数据</td></tr>
+			    {{# } }}
+			</tbody>
+		</table>
+	</div>
+</script>
+<script>
+let overStatus = '${over}',
+	erOperationCodes = '${operationCodes}',
+	erSearchTime = {};
+<#if pages??> 
+initTable({
+	modelName: 'emergency-rehearsal',
+	curr: '${pages.currentPage!1}',
+	totalPage: '${pages.totalPageNum!1}',
+	totalCount: '${pages.totalCount!1}',
+	limit: '${pages.limit!10}'
+});
+</#if>
+<#if startTime??>
+	erSearchTime.startTime = "${startTime?number_to_datetime!''}"
+</#if>
+<#if endTime??>
+	erSearchTime.endTime = "${endTime?number_to_datetime!''}"
+</#if>
+
+emergencyRehearsalFn.init({over: overStatus,operationCodes:erOperationCodes,searchTime:erSearchTime});
+</script>

@@ -1,0 +1,28 @@
+{
+	"year" : 2017,
+	"days" : [{
+		"month" : 1,
+		"dutyDays" : [ 22 ],
+		"restDays" : [ 1, 2, 27, 28, 29, 30, 31 ]
+	}, {
+		"month" : 2,
+		"dutyDays" : [ 4 ],
+		"restDays" : [ 1, 2 ]
+	}, {
+		"month" : 4,
+		"dutyDays" : [ 1 ],
+		"restDays" : [ 2, 3, 4, 29, 30 ]
+	}, {
+		"month" : 5,
+		"dutyDays" : [ 27 ],
+		"restDays" : [ 1, 28, 29, 30 ]
+	}, {
+		"month" : 9,
+		"dutyDays" : [ 30 ],
+		"restDays" : []
+	}, {
+		"month" : 10,
+		"dutyDays" : [],
+		"restDays" : [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+	}]
+}

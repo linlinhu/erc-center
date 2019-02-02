@@ -1,0 +1,136 @@
+<script id="volunteer_detail_data" type="text/html">
+	<div class="row">
+		<div class="col-sm-3 text-center">
+			<img class="img-icon avatar" src="{{d.avatar.picUrls}}"  onerror="src='img/male.png'">
+		</div>
+		<div class="col-sm-9">
+			<div class="realName">{{d.realName}}</div>
+			{{# if(d.age) { }}
+				<div class="top-line">{{d.age}}岁</div>															
+			{{# } }}
+			{{# if( d.jobTitle && d.jobTitle.name) { }}
+				<div class="top-line">职业：{{d.jobTitle.name?d.jobTitle.name:'暂缺'}}</div>															
+			{{# } }}
+			<div class="top-line">
+			技能分类：
+				{{# if( d.proAbilityClasses && d.proAbilityClasses.length > 0) { }}
+					{{# layui.each(d.proAbilityClasses, function(index, item){ }}
+						{{item.name}}&nbsp;&nbsp;&nbsp;
+					{{# }); }}
+				{{# } else { }}
+					暂未分类													
+				{{# } }}
+			</div>
+		</div>
+	</div>
+	<div class="panel blank-panel">
+		<div class="panel-heading">
+			<div class="panel-options">
+				<ul class="nav nav-tabs">
+					<li class="active">
+                   		<a data-toggle="tab" href="form.html#basic-info">基本信息</a>
+                  	</li>
+                  	<li class="">
+                  		<a data-toggle="tab" href="form.html#service-info">服务信息</a>
+                  	</li>
+                  	<li class="hide">
+                  		<a data-toggle="tab" href="form.html#activity-record">活动记录</a>
+                  	</li>
+                  	<li class="hide">
+                  		<a data-toggle="tab" href="form.html#online-record">上下线记录</a>
+                  	</li>
+                  	<li class="">
+                  		<a data-toggle="tab" href="form.html#skill-assess">综合评估</a>
+                  	</li>
+              	</ul>
+          	</div>
+      	</div>
+      	<div class="panel-body">
+          	<div class="tab-content">
+              	<div id="basic-info" class="tab-pane active">
+              		<div class="row">
+              			<div class="col-sm-3">学历</div>
+						{{# if( d.education && d.education.name) { }}
+							<div class="col-sm-9">{{d.education.name}}</div>														
+						{{# } else { }}	
+							<div class="col-sm-9">暂缺</div>												
+						{{# } }}
+              			
+              		</div>
+              		<div class="row">
+              			<div class="col-sm-3">民族</div>
+						{{# if(d.nation && d.nation.name) { }}
+							<div class="col-sm-9">{{d.nation.name}}</div>
+						{{# } else { }}	
+							<div class="col-sm-9">暂缺</div>													
+						{{# } }}
+              		</div>
+              		<div class="row">
+              			<div class="col-sm-3">手机号</div>
+              			<div class="col-sm-9">{{d.mobile}}</div>
+              		</div>
+              		<div class="row">
+              			<div class="col-sm-3">身份证号</div>
+              			<div class="col-sm-9">{{d.idnumber}}</div>
+              		</div>
+              		<div class="row">
+              			<div class="col-sm-3">语言能力</div>
+						{{# if(d.languageSkills.length > 0) { }}
+							<div class="col-sm-9">
+							{{# layui.each(d.languageSkills, function(index, item){ }}
+								<span class="tab-cell">{{item.name}}</span>
+							{{# }); }}
+							</div>	
+						{{# } else { }}	
+							<div class="col-sm-9">暂缺</div>						
+						{{# } }}
+              		</div>
+              		<div class="row">
+              			<div class="col-sm-3">通讯地址</div>
+              			<div class="col-sm-9">{{d.contactAddr.fullAddress}}</div>
+              		</div>
+              	</div>
+              	<div id="service-info" class="tab-pane">
+              		<div class="forum-item-title">服务时间</div>
+              		<div class="forum-sub-title">
+						{{# if(d.serviceTime.length > 0) { }}
+							{{# layui.each(d.serviceTime, function(index, item){ }}
+								<span class="tab-cell">{{item.name}}</span>
+							{{# }); }}
+						{{# } else { }}	
+							暂缺						
+						{{# } }}
+					</div>
+              	</div>
+              	<div id="activity-record" class="tab-pane">暂未开放</div>
+              	<div id="online-record" class="tab-pane">暂未开放</div>
+              	<div id="skill-assess" class="tab-pane">
+					<ul>
+						{{# if(d.comprehensive.length > 0) { }}
+							{{# layui.each(d.comprehensive, function(index, item){ }}
+								<li class="col-sm-12">
+									<div class="col-sm-3">{{item.recordName}}</div>
+									<div class="col-sm-8">
+										<input class="ionrange ionrange-{{index}}">
+									</div>
+								</li>
+							{{# }); }}
+						{{# } else { }}	
+							暂缺						
+						{{# } }}
+					</ul>
+				</div>
+          	</div>
+      	</div>
+  	</div>
+	
+	<div class="volunteerStatus-btns">
+		{{# if(d.scope == 10){ }}
+			<button type="button" class="btn btn-primary dismissal" ></i>淘汰</button>
+        	<button type="button" class="btn btn-default employment"></i>录用</button>
+		{{# } else if(d.scope == 20) { }}
+			<button type="button" class="btn btn-primary dismissal" ></i>淘汰</button>		
+		{{# } }}
+	</div>
+</script>
+<div class="wrapper-content volunteer-detail hide" id="volunteer-detail"></div>

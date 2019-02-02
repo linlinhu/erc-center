@@ -1,0 +1,79 @@
+.labels>ul, .labels>a {
+	float: left;
+}
+.labels>ul {
+	margin: 0;
+	padding: 0;
+}
+.labels>a {
+	display: block;
+	width: 35px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+}
+.labels li {
+	display: inline-block !important;
+	padding: 0 5px !important;
+	margin-bottom: 8px;
+}
+.labels input {
+	padding: 8px 5px;
+	border: 1px solid;
+	border-color: #5a98de;
+	border-radius: 3px;
+}
+
+.labels li span, .labels li a {
+	height: 33px;
+	line-height: 33px;
+	display: inline-block;
+	background: #5a98de;
+	color: #fff;
+	padding: 0 5px;
+	cursor: pointer;
+}
+.labels span {
+	border-right: 1px solid #fff;
+}
+.labels li a {
+	
+	vertical-align: bottom;
+}
+.labels li span.labels-reverse {
+	background: #fff;
+	color: #5a98de;
+	border: 1px solid;
+}
+.has-error input {
+	border: 1px solid #FF5722;
+	color: #FF5722;
+}
+
+.lst-label {
+	display: inline-block;
+	padding: 0 5px;
+	background: #5a98de;
+	color: #fff;
+	border: 1px solid #5a98de;
+	margin-bottom: 5px;
+}
+
+.lst-label-1 {
+	display: inline-block;
+	padding: 0 5px;
+	border: 1px solid #5a98de;
+	color: #5a98de;
+	background: #fff;
+	margin-bottom: 5px;
+}
+
+
+.lst-label-2 {
+	display: inline-block;
+	padding: 0 5px;
+	background-color: #FFE6B0;
+	color: black;
+	border: 1px #FFB951 solid;
+	margin-bottom: 5px;
+}

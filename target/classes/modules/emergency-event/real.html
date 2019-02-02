@@ -1,0 +1,101 @@
+
+<div class="ibox float-e-margins real-event" style="position: relative">
+	<div class="ibox-title">
+		<h5></h5>
+		<div class="ibox-tools">
+			<a class="btn btn-primary goForm" href="javascript:;"
+				alt="添加真实事件" title="添加真实事件"> <i class="fa fa-plus"></i>
+			</a>
+		</div>
+	</div>
+	<div class="ibox-content">
+		<form method="get" id="real-ee-searchform">
+			<div class="filter-line">
+				<input type="hidden" name="page" role="user-params" value="${page!'1'}">
+				<input class="form-control" type="hidden" name="regionId" role="user-params" value="${regionId!''}">
+				<input class="form-control region-choosen-click" type="text" placeholder="选择区域" name="regionName" readonly role="user-params" value="${regionName!''}">
+				<select class="form-control" placeholder="选择事件分类" name="eventType" role="user-params" value="${eventType!''}">
+					<option>公益事件</option>
+					<option>社会灾害</option>
+				</select>
+				<button type="button" class="btn btn-primary search">
+					<i class="fa fa-search"></i>
+				</button>
+				<button type="button" class="btn btn-default reset" onclick="goPage('index',{});">
+					<i class="fa fa-refresh"></i>
+				</button>
+			</div>
+		</form>
+		<table class="footable table table-stripped toggle-arrow-tiny"
+			id=real-ee-table data-page-size="10"
+			data-paging="false">
+			<thead>
+				<tr>
+					<th data-toggle="true">事件分类</th>
+					<th>标题</th>
+					<th>日期</th>
+					<th>区域</th>
+					<th>等级</th>
+					<th>状态</th>
+					<th data-sort-ignore="true">处理记录</th>
+					<th data-sort-ignore="true">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#if realPages.resultList?? && realPages.resultList?size gt 0 >
+					<#list realPages.resultList as d>
+						<tr>
+							<td><label>${d.eventTypeName!"-"}</label></td>
+							<td>${d.title}</td>
+							<td>${d.eventTime?number_to_datetime}</td>
+							<td>${d.regionName}</td>
+							<td>${d.eventLevelName}</td>
+							<td>
+								<#if d.activeStatus == 1>
+									草稿
+								</#if>
+								<#if d.activeStatus == 2>
+									撤销
+								</#if>
+								<#if d.activeStatus == 3>
+									发布
+								</#if>
+							</td>
+							<td><a href="javascript:;" class="disposed-pecord"><i class="fa fa-list text-primary"></i></a></td>
+							<td>
+								<#if d.activeStatus == 3>
+									<a href="javascript:operation({'moduleName': 'emergency-event', 'oper': 'undo', 'params': {'id': '${d.id}'}});" title="撤销"><i class="fa fa-reply text-primary"></i></a>&nbsp;
+								<#else>
+									<a href="javascript:;" title="编辑" class="goForm" data-id="${d.id}"><i class="fa fa-pencil text-primary"></i></a>&nbsp;
+									<a href="javascript:operation({'moduleName': 'emergency-event', 'oper': 'remove', 'params': {'id': '${d.id}'}});" title="删除" class="remove"><i class="fa fa-trash text-primary"></i></a>&nbsp;
+									<a href="javascript:operation({'moduleName': 'emergency-event', 'oper': 'publish', 'params': {'id': '${d.id}'}});" title="发布" class="release"><i class="fa fa-arrow-circle-o-up text-primary"></i></a>&nbsp;
+								</#if>
+							</td>
+						</tr>
+					</#list>
+		        <#else>
+		            <tr><td>暂无数据</td></tr>
+			    </#if>
+			</tbody>
+		</table>
+		<div class="text-right" id="real-ee-page"></div>
+	</div>
+</div>
+
+
+<script>
+$('#real-ee-searchform .region-choosen-click').click(function(){
+	/* GridPicker.init({
+		checkedNodes: []
+	}, function(res) {
+		$('#real-ee-searchform .region-choosen-click').val(res.name);
+	}); */
+	regionPicker.init({
+		checkedNodes: ['${realPages.regionId}']
+	}, function(res) {
+		$('#real-ee-searchform input[name="regionId"]').val(res.id);
+		$('#real-ee-searchform .region-choosen-click').val(res.name);
+	});
+});
+</script>
+

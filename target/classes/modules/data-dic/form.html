@@ -1,0 +1,246 @@
+<style>
+	.form-control-icon {
+		font-size: 26px;
+		margin: 6px 0;
+		cursor: pointer;
+	}
+	.dd-items-edit-panel {
+		padding: 10px 0;
+	}
+	.dd-items-edit-panel .opers {
+		margin-bottom: 10px;
+	}
+	.dd-items-edit-panel ul.normal-items li {
+		background: rgb(243, 245, 245);
+		padding: 5px;
+		position: relative;
+		margin-bottom: 3px;
+	}
+	
+	
+	.dd-items-edit-panel ul.normal-items li div.rgt-opers {
+		position: absolute;
+		right: 10px;
+		top: 5px;
+		display: none;
+	}
+	
+	.dd-items-edit-panel ul.normal-items li:hover div.rgt-opers {
+		display: block;
+	}
+	.dropdown-menu {
+		z-index:2147483648!important;
+	} 
+	.color-cell {
+		display:inline-block;
+		width:16px;
+		height:12px;
+	}
+</style>
+<div class="wrapper-content data-dic">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><#if info??>编辑<#else>添加</#if>数据字典组</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('index')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+               		 <form method="get" class="form-horizontal" id="data-dic-form">
+             		 	<input type="hidden" name="id">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*数据字典组名</label>
+                            <div class="col-sm-10">
+								<input class="form-control input-choose" placeholder="输入Group name" type="text" name="name" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*数据字典组码</label>
+                            <div class="col-sm-10">
+								<input class="form-control input-choose" placeholder="输入Group code" type="text" name="groupCode" value="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*是否是树形结构</label>
+                            <div class="col-sm-10">
+								<input type="hidden" name="isTree" value="">
+								<i class="form-control-icon text-info fa fa-toggle-off" id="isTreeToggle"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*是否多选</label>
+                            <div class="col-sm-10">
+								<input type="hidden" name="isMultiselect" value="false">
+								<i class="form-control-icon text-info fa fa-toggle-off switch" id="isMultiselectToggle"></i>
+                            </div>
+                        </div>
+                        <div class="form-group fillColor-switch">
+                            <label class="col-sm-2 control-label">*是否填充色块</label>
+                            <div class="col-sm-10">
+								<input type="hidden" name="isFillColor" value="false">
+								<i class="form-control-icon text-info fa fa-toggle-off switch" id="isFillColorToggle"></i>
+                            </div>
+                        </div>
+                        <div class="form-group" id="dd-items-center">
+                            <div class="col-sm-6 col-xs-10 col-sm-offset-2">
+								<div class="dd-items-edit-panel" id="dd-normal-items">
+									<@codeValidation codes=operationCodes operationCode="add-i">
+									<div class="opers">
+										<a class="goForm" href="#" onclick="return false;"><i class="fa fa-plus"></i></a>
+									</div>
+									</@codeValidation>
+									<div class="lsts">
+										<ul class="normal-items" id="dd-normal-items-view"></ul>
+									</div>
+								</div>
+								<div class="dd-items-edit-panel hide" id="dd-tree-items">
+									<div class="opers">
+										<@codeValidation codes=operationCodes operationCode="add-parent">
+										<a class="addParent" href="#" onclick="return false;"><i class="fa fa-plus">&nbsp;增加父节点</i></a>
+										</@codeValidation>
+										<@codeValidation codes=operationCodes operationCode="add-child">
+										<a class="addLeaf" href="#" onclick="return false;"><i class="fa fa-plus">&nbsp;增加叶子节点</i></a>
+										</@codeValidation>
+										<@codeValidation codes=operationCodes operationCode="edit-i">
+										<a class="edit" href="#" onclick="return false;"><i class="fa fa-pencil">&nbsp;编辑节点</i></a>
+										</@codeValidation>
+										<@codeValidation codes=operationCodes operationCode="remove-i">
+										<a class="remove" href="#" onclick="return false;"><i class="fa fa-remove">&nbsp;删除节点</i></a>
+										</@codeValidation>
+									</div>
+									<div class="lsts ztree-panel">
+										<ul class="tree-items ztree" id="dd-tree-items-view"></ul>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hide"  id="dd-item-form-tpl">
+	<div class="wrapper-content">
+	<div class="row">
+		<div class="col-sm-12">
+			<form method="get" class="form-horizontal">
+			 	<input type="hidden" name="id">
+			 	<input type="hidden" name="pid">
+			 	<input type="hidden" name="valueType" value="string">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">数据项名</label>
+					<div class="col-sm-9">
+						<input class="form-control input-choose" placeholder="输入数据项名" type="text" name="name" value="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">数据项码</label>
+					<div class="col-sm-9">
+						<input class="form-control input-choose" placeholder="输入数据项名" type="text" name="code" value="">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">值</label>
+					<div class="col-sm-9">
+						<input class="form-control" placeholder="输入值" type="text" name="value" value="">
+					</div>
+				</div>
+				<div class="form-group fillColor hide">
+					<label class="col-sm-3 control-label">色块颜色</label>
+					<div class="col-sm-9"> 
+						<div class="input-group colorpicker-dd">
+							<input type="text" value="#ffffff" class="form-control" name="fillColor" placeholder="请选择" readonly disabled="disabled" id="my-colorPicker"/>
+                            <span class="input-group-addon"><i></i></span>
+                       </div>
+					</div>
+				</div>
+				<div class="form-group">
+				    <div class="col-sm-4 col-sm-offset-3">
+				        <button class="btn btn-primary" type="submit">保存</button>
+				    </div>
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
+</div>
+<script id="dd_normal_items_datas" type="text/html">
+{{# if(d && d.length > 0) { }}
+{{# layui.each(d, function(index, item){ }}
+<li>
+	<span>{{item.name}}-{{item.code}}- {{item.value}}
+	{{# if(item.extend){ }}
+		- <i class="color-cell" style="background:{{item.extend.fillColor}}"></i>
+	{{# } }}
+	</span>
+	<div class="rgt-opers">
+		<@codeValidation codes=operationCodes operationCode="edit-i">
+		<a class="goForm" href="#" onclick="return false;" data-id="{{item.id}}"><i class="fa fa-pencil"></i></a>
+		</@codeValidation>
+		<@codeValidation codes=operationCodes operationCode="remove-i">
+		<a class="remove" href="#" onclick="return false;" data-id="{{item.id}}"><i class="fa fa-remove"></i></a>
+		</@codeValidation>
+	</div>
+</li>
+{{# }); }}
+{{# } }}
+</script>
+<script>
+let ddEditor = true;
+<#if info??>
+$('#data-dic-form input[name = "id"]').val('${info.id!""}');
+$('#data-dic-form input[name = "name"]').val('${info.name!""}');
+$('#data-dic-form input[name = "groupCode"]').val('${info.groupCode!""}');
+	<#if info.isTree == true>
+		DataDicForm.toggleOnTree();
+	<#else>
+		DataDicForm.toggleOffTree();
+	</#if>
+	<#if info.extend??>
+		<#if info.extend.isMultiselect?? && info.extend.isMultiselect == 'true'>
+			DataDicForm.toggleStatus('isMultiselect');
+		</#if>
+		
+		<#if info.extend.isFillColor?? && info.extend.isFillColor == 'true'>
+			DataDicForm.toggleStatus('isFillColor');
+		</#if>
+	</#if>
+	<#if info.extend?? && info.extend.editor?? && info.extend.editor == false>
+		ddEditor = false;
+	<#else>
+		ddEditor = true;
+	</#if>
+
+	$('#isTreeToggle').unbind('click').bind('click', function() {
+		layer.msg('禁止修改', {icon: 5});
+	});
+	$('#data-dic-form .switch').unbind('click').bind('click', function() {
+		layer.msg('禁止修改', {icon: 5});
+	});
+<#else>
+	$('#dd-items-center').hide();
+	$('#isTreeToggle').unbind('click').bind('click', function() {
+		if($(this).hasClass('fa-toggle-off')) {
+			DataDicForm.toggleOnTree();
+		} else {
+			DataDicForm.toggleOffTree();
+		}
+	});
+	$('#data-dic-form .switch').on('click',function(){
+		let name = $(this).parent().find('input').attr('name');
+		DataDicForm.toggleStatus(name);
+	});
+</#if>
+DataDicForm.init({ddEditor: ddEditor});
+</script>

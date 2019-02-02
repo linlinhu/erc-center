@@ -1,0 +1,206 @@
+<style type="text/css">
+	#container{
+		height: 500px;
+	}
+	.bdmap-area {
+		position: relative;
+		height: 100%;
+	}
+	.bdmap-area .zoom-operation {
+		position: absolute;
+		height: 50px;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 9999;
+		padding: 20px 10px;
+	}
+	
+	.bdmap-area .zoom-operation .left-oper {
+		float: left;
+		margin: 0;
+	}
+	.bdmap-area .zoom-operation .left-oper a.fa-list {
+		background: rgba(255, 255, 255, .5);
+		color: #444;
+		padding: 10px;
+		border-radius: 3px;
+	}
+	
+	.region-wrap {
+		color: #444;
+	}
+	
+	.region-wrap > div {
+		float: left;
+		margin: 5px 8px;
+		margin-left: 0;
+	}
+	.bdmap-area .zoom-operation .left-oper a.fa-list.selected {
+		background: #2480cc;
+		color: #fff;
+	}
+	
+	.bdmap-area .zoom-operation .rgt-opers {
+		float: right;
+	}
+	.bdmap-area select,
+	.bdmap-area input {
+		background-color: rgb(243, 245, 245);
+		border: 1px solid #fff;
+		color: #444;
+	}
+	.fold-grid-region-list {
+		position: absolute;
+		width: 300px;
+		height: 400px;
+		left: 10px;
+		top: 60px;
+		color: #444;
+		overflow: hidden;
+		overflow-y: scroll;
+		background: #fff;
+
+	}
+	.fold-grid-region-list .panel {
+		border: 0;
+		margin-top: 0 !important;
+		border-radius: 0;
+		border-bottom: 1px solid #fff;
+	}
+	
+	.fold-grid-region-list .panel .panel-heading {
+		padding: 5px 15px;
+	}
+	
+	.fold-grid-region-list .panel .panel-heading.selected {
+		background-color: #ddd;
+	}
+	
+	.fold-grid-region-list .panel .panel-heading a,
+	.fold-grid-region-list .panel .panel-heading a:hover,
+	.fold-grid-region-list .panel .panel-heading a:focus {
+		color: #444;
+		display: block;
+		outline: 0;
+	}
+	.fold-grid-region-list .list-group > li {
+		cursor: pointer
+	}
+</style>
+<div class="wrapper-content" id="region-manage">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="bdmap-area">
+				<div class="zoom-operation">
+					<div class="region-wrap">
+						<div>地图区域： ${topRegion.name}</div>
+						<#if provinceList?? && provinceList?size gt 0>
+						<div class="province-filter">
+							<select name="province">
+								<option value="-1">-全国-</option>
+								<#list provinceList as p>
+									<option value="${p.id}">${p.name}</option>
+								</#list>
+							</select>
+							<select name="city">
+								<option value="-1">-全省/市-</option>
+							</select>
+						</div>			
+						</#if>
+						<#if cityList?? && cityList?size gt 0>
+						<div class="city-filter">
+							<select name="city">
+								<option value="-1">-全省/市-</option>
+								<#list cityList as c>
+									<option value="${c.id}">${c.name}</option>
+								</#list>
+							</select>
+						</div>				
+						</#if>
+						<@codeValidation codes=operationCodes operationCode="search">
+							<div class="left-oper"><a class="fa fa-list toggle-region-grid-list">&nbsp;网格区域列表</a></div>
+						</@codeValidation>
+						<script type="text/html" id="grid_region_distribute_datas">
+							{{# if(d && d.length > 0) { }}
+							<div class="panel-body no-padding">
+	                        	<div class="panel-group" id="accordion">
+									{{# layui.each(d, function(index, item){ }}
+									<div class="panel panel-default">
+			                            <div class="panel-heading">
+			                                <h5 class="panel-title">
+			                                    <a class="center-zoom-region" data-name="{{item.name}}" data-toggle="collapse" data-parent="#accordion" href="manage.html#region{{index}}">{{item.name}}{{item.grids ? '<span class="badge badge-primary" style="float:right">' + item.grids.length + '</span>' : ''}}</a>
+			                                </h5>
+			                            </div>
+			                            <div id="region{{index}}" class="panel-collapse collapse">
+											{{# if(item.grids && item.grids.length > 0) { }}
+			                                <div class="panel-body no-padding">
+			                                	<ul class="list-group">
+													{{# layui.each(item.grids, function(r_index, r){ }}
+			                                			<li class="list-group-item center-zoom-grid" data-lat="{{r.point.lat}}"  data-lng="{{r.point.lng}}" data-name="{{r.name}}">{{r.name}}</li>
+			                                		{{# }); }}
+			                                	</ul>
+			                                </div>
+			                                {{# } else { }}
+			                                <div class="panel-body">暂无网格</div>
+			    							{{# } }}
+			                            </div>
+			                        </div>
+									{{# }); }}
+		                        </div>
+		                    </div>
+			               	{{# } else { }}
+								区域信息暂无
+							{{# } }}
+						</script>
+						<div class="fold-grid-region-list hide" id="grid-region-distribute-view"></div>
+					</div>
+					<div class="rgt-opers">
+						<@codeValidation codes=operationCodes operationCode="add">
+							<button class="btn btn-primary add-marker hide">添加网格区域</button>
+						</@codeValidation>
+						<button class="btn btn-primary save-region-grid hide">保存</button>
+					</div>
+				</div>
+				<div id="container"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="wrapper-content hide" id="grid-region-form">
+	<div class="row">
+		<div class="col-sm-12">
+			<form method="get" class="form-horizontal">
+			 	<input type="hidden" name="id" role="user-params">
+			 	<input type="hidden" name="regionId" role="user-params">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">网格区域名称</label>
+					<div class="col-sm-9">
+						<input class="form-control" placeholder="输入网格区域名称" type="text" name="name" value="" role="user-params">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">负责人</label>
+					<div class="col-sm-9">
+						<div class="form-control chargeperson-choosen">选择一个负责人</div>
+					</div>
+				</div>
+				<div class="form-group">
+				    <div class="col-sm-4 col-sm-offset-3">
+				        <button class="btn btn-primary" type="submit">去地图上选点</button>
+				    </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+$('#container').css('height', ($(window).height() - 140) + 'px');
+RegionGridManage.init({
+	containerId: 'container',
+	centerName: '${topRegion.name}'
+});
+
+
+</script>
+

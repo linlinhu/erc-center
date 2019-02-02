@@ -1,0 +1,47 @@
+<!-- 应急事件记录弹窗 -->
+<div id='logDatas-Panel' class="hide">
+	<div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+            	<div class="timeline" id="log-view"></div>	
+                <script id="LogDatas" type="text/html">
+				{{# if(d.length > 0) { }}
+					{{# layui.each(d, function(index, item){ }}
+						<div class="timeline-item">
+							<div class="row">
+                            	<div class="col-sm-5 date">
+                                	<i class="fa fa-edit"></i> {{new Date(item.createTime).Format("yyyy-MM-dd hh:mm:ss")}}
+                           		</div>
+                            	<div class="col-sm-7 content">
+									{{# if (item.type == 1){ }}
+									<p class="m-b-xs">
+										<strong>
+											由{{item.auditor.username}}【提交审核】
+										</strong>
+                                	</p>
+									{{# } else { }}
+									<p class="m-b-xs">
+										<strong>
+											由{{item.auditor.username}}
+											{{# if (item.result == 1){ }}
+												【通过审核】
+											{{# } else { }}
+												【驳回活动】
+											{{# } }}
+										</strong>
+                                	</p>
+                                	<p>{{item.remark}}</p>
+									{{# } }}
+                                	
+                            	</div>
+							</div>
+                   		</div>
+					{{# }); }}
+				{{# }else { }}
+					<p>暂无数据</p>
+				{{# } }}
+				</script>
+            </div>
+        </div>
+    </div>
+</div>

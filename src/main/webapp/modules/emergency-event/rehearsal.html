@@ -1,0 +1,84 @@
+<div class="ibox float-e-margins rehearsal-event" style="position: relative">
+	<div class="ibox-title">
+		<h5></h5>
+		<div class="ibox-tools">
+			<a class="btn btn-primary goForm" href="javascript:"
+				alt="添加演练事件" title="添加演练事件"> <i class="fa fa-plus"></i>
+			</a>
+		</div>
+	</div>
+	<div class="ibox-content">
+		<form method="get" id="rehearsal-ee-searchform">
+			<div class="filter-line">
+				<input type="hidden" name="page">
+				<input class="form-control region-choosen-click" type="text" placeholder="选择区域" readonly>
+				<select class="form-control" placeholder="选择事件分类">
+					<option>公益事件</option>
+					<option>社会灾害</option>
+				</select>
+				<button type="button" class="btn btn-primary" role="submit">
+					<i class="fa fa-search"></i>
+				</button>
+				<button type="button" class="btn btn-default" role="reset">
+					<i class="fa fa-refresh"></i>
+				</button>
+			</div>
+		</form>
+		<table class="footable table table-stripped toggle-arrow-tiny"
+			id=rehearsal-ee-table data-page-size="10"
+			data-paging="false">
+			<thead>
+				<tr>
+					<th data-toggle="true">分类</th>
+					<th>标题</th>
+					<th>日期</th>
+					<th>区域</th>
+					<th>等级</th>
+					<th>状态</th>
+					<th data-sort-ignore="true">处理记录</th>
+					<th data-sort-ignore="true">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><label>公共事件</label></td>
+					<td>弱视儿童心理辅导</td>
+					<td>18-02-107 12:45</td>
+					<td>成华区</td>
+					<td>三级</td>
+					<td>草稿</td>
+					<td><a href="javascript:;" class="disposed-pecord"><i class="fa fa-list text-primary"></i></a></td>
+					<td>
+						<a href="javascript:;" title="编辑" class="goForm"><i class="fa fa-pencil text-primary"></i></a>&nbsp;
+						<a href="javascript:;" title="删除" class="remove"><i class="fa fa-trash text-primary"></i></a>&nbsp;
+						<a href="javascript:;" title="发布" class="release"><i class="fa fa-lock text-primary"></i></a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td><label>社会灾害</label></td>
+					<td>天府新谷楼梯坍塌</td>
+					<td>18-02-107 12:45</td>
+					<td>高新区</td>
+					<td>一级</td>
+					<td>已发布</td>
+					<td><a href="javascript:;" class="disposed-pecord"><i class="fa fa-list text-primary"></i></a></td>
+					<td>
+						<a href="javascript:;" title="撤销" class="revoke"><i class="fa fa-unlock text-primary"></i></a>&nbsp;
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="text-right" id="rehearsal-ee-page"></div>
+	</div>
+</div>
+
+
+<script>
+$('#rehearsal-ee-searchform .region-choosen-click').click(function(){
+	regionPicker.init({
+		checkedNodes: []
+	}, function(res) {
+		$('#rehearsal-ee-searchform .region-choosen-click').val(res.name);
+	});
+});
+</script>

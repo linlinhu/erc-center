@@ -1,0 +1,536 @@
+<style>
+	i {
+		cursor:pointer;
+	}
+	#volunteer-procession-manage li.list-group-item.selected {
+		color: #2480cc;
+		border-radius: 0;
+	}
+	#timeline-vp .opers-line {
+		display: block;
+		height: 50px;
+		padding: 8px 10px;
+		position: relative;
+		border-bottom: 1px solid #eee;
+	}
+	#timeline-vp .opers-line > .search {
+		position: absolute;
+		left: 8px;
+		right: 48px;
+		border-right: 1px dashed #ccc;
+		height: 34px;
+	}
+	
+	#timeline-vp .opers-line > .search > div {
+		position: absolute;
+		left: 0;
+		right: 84px;
+	}
+	#timeline-vp .opers-line > .search > button.search {
+		position: absolute;
+		right: 48px;
+	}
+	#timeline-vp .opers-line > .search > button.reset {
+		position: absolute;
+		right: 8px;
+	}
+	#grids-vp .panel-title .badge {
+		float: right;
+		margin-top: -2px;
+		cursor: pointer;
+		display: none;
+	}
+	li.list-group-item {
+		cursor: pointer;
+	}
+	
+	#grids-vp .panel-title:hover .badge {
+		display: inline-block;
+	}
+	#timeline-vp .opers-line > .add {
+		position: absolute;
+		right: 8px;
+	}
+	.vp-info-line {
+		margin-bottom: 10px;
+		line-height: 25px;
+		display: block;
+		min-height: 25px;
+		overflow: hidden;
+	}
+	.vp-info-line .toggle-fold-vp-details {
+		margin-left: 10px;
+		outline: 0;
+	}
+	.vp-info-line > div {
+		float: left;
+		margin-right: 10px;
+	}
+	.vp-leaders > li {
+		float: left;
+		margin-right: 10px;
+	}
+	.vp-leaders .name {
+		line-height:40px;
+	}
+	.vp-leaders > li:hover .name,
+	.vp-leaders > li .opers-del {
+		display: none;
+	}
+	
+	.vp-leaders > li .name,
+	.vp-leaders > li:hover .opers-del {
+		display: block;
+	}
+	
+	.vp-leaders > li > i {
+		width: 50px;
+		height: 50px;
+		background-color: #ccc;
+		border-radius: 50px;
+		text-align: center;
+		line-height: 50px;
+		color: #fff;
+		font-size: 24px;
+		
+	}
+	
+	.vp-leaders > li > i.fa-list {
+		background: #fff;
+		color: #ccc;
+		border: 2px solid; 
+	}
+	#timeline-vp .list-group-item {
+		cursor:pointer;
+	}
+	.nav-tabs li a {
+		padding:10px 25px;
+	}
+	
+</style>
+<div class="wrapper-content" id="volunteer-procession-manage">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="ibox float-e-margins">
+		        <div class="ibox-title">
+		            <h5>应急队伍管理</h5>
+		        </div>
+		        <div class="ibox-content">
+		        	<div class="row">
+		        		<div class="col-sm-4">
+							<div class="tabs-container">
+								<ul class="nav nav-tabs">
+									<li class="active col-sm-6"><a data-toggle="tab" href="#timeline-vp"
+										aria-expanded="true">时间排序</a></li>
+									<li class=" col-sm-6"><a data-toggle="tab" href="#grids-vp"
+										aria-expanded="false">网格排序</a></li>
+								</ul>
+								<div class="tab-content">
+									<div id="timeline-vp" class="tab-pane active"></div>
+									<script type="text/html" id="timeline_vp_tpl">
+									<div class="panel-body no-padding">
+										<form method="get">
+										<div class="opers-line">
+											<@codeValidation codes=operationCodes operationCode="search-vp">
+											<div class="search">
+												<div>
+													<input type="hidden" name="page" value="{{d.params && d.params.page ? d.params.page : ''}}" role="user-params">
+													<input type="hidden" name="limit" value="{{d.params && d.params.limit ? d.params.limit : ''}}" role="user-params">
+													<input class="form-control" name="name" value="{{d.params && d.params.name ? d.params.name : ''}}" role="user-params">
+												</div>
+												<button class="btn btn-primary search" type="button" role="submit"><i class="fa fa-search"></i></button>
+												<button class="btn btn-default reset" type="button" role="reset"><i class="fa fa-refresh"></i></button>
+											</div>
+											</@codeValidation>
+											<@codeValidation codes=operationCodes operationCode="add-vp">
+											<button class="btn btn-primary add" type="button" role="add" title="添加志愿者队伍"><i class="fa fa-plus"></i></button>
+											</@codeValidation>
+										</div>
+										</form>
+										
+										{{# if (d.list && d.list.length >0) { }}
+										<ul class="list-group">
+						 					{{# layui.each(d.list, function(index, item){ }}
+						 					<li class="list-group-item {{index == 0 ? 'selected' : ''}}" data-id="{{item.id}}">
+					                           	 {{item.name ? item.name : '暂无'}}
+					                        </li>
+						 					{{# }); }}
+						                </ul>
+										<div id="timeline-vp-page"></div>
+						 		        {{# } else { }}
+						 				<div class="empty-tip">暂未创建应急队伍</div>
+						 				{{# } }}
+									</div>
+									</script>
+									<div id="grids-vp" class="tab-pane"></div>
+									<script type="text/html" id="grids_vp_list_tpl">
+									<div class="panel-body no-padding">
+									{{# if (d.list && d.list.length > 0) { }}
+										<ul class="list-group">
+				 						{{# layui.each(d.list, function(index, item){ }}
+					                        <li class="list-group-item" data-id="{{item.id}}">
+					                           	 {{item.name}}
+					                        </li>
+						                {{# }); }}
+					                    </ul>
+					                {{# } }}
+                                    </div>
+									</script>
+									<script type="text/html" id="grids_vp_tpl">
+									<div class="panel-body">
+										{{# if (d.list && d.list.length > 0) { }}
+										<div class="panel-group" id="accordion">
+					 						{{# layui.each(d.list, function(index, item){ }}
+				                            <div class="panel panel-default">
+				                                <div class="panel-heading">
+				                                    <h5 class="panel-title">
+				                                        <a data-toggle="collapse" data-parent="#accordion" href="manage.html#vp-grid-{{item.gridId}}" class="grid-name {{index == 0 ? '' : 'collapsed'}}" data-id="{{item.gridId}}" aria-expanded="{{index == 0 ? 'true' : 'false'}}">
+				                                        	{{item.gridName}}({{item.count}}个)
+				                                        </a>
+				                                        <span class="badge badge-primary" role="add" data-grid-id="{{item.gridId}}"><i class="fa fa-plus"></i></span>
+				                                    </h5>
+				                                </div>
+				                                <div id="vp-grid-{{item.gridId}}" class="panel-collapse collapse" aria-expanded="false">
+				                                    
+				                                </div>
+				                            </div>
+				                            {{# }); }}
+				                        </div>
+				                        {{# } }}
+									</div>
+									</script>
+								</div>
+							</div>
+		        		</div>
+		        		<div class="col-sm-8 vp-info">选择左侧队伍查看详情</div>
+		        		
+		        	</div>	
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="vp-form-wrap hide">
+	<div class="wrapper-content vp-form-box">
+		<form method="get" class="form-horizontal">
+			<input type="hidden" name="id" role="user-params">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">*名称</label>
+		        <div class="col-sm-10">
+					<input class="form-control" placeholder="输入名称" type="text" name="name" value="" role="user-params">
+				</div>
+	        </div>
+	        <div class="form-group grid-fg">
+				<label class="col-sm-2 control-label">*网格</label>
+		        <div class="col-sm-10">
+					<div class="form-control grid-choosen-click">选择所属网格</div>
+				</div>
+	        </div>
+	        
+	        <div class="form-group">
+				<label class="col-sm-2 control-label">*标签</label>
+		        <div class="col-sm-10">
+					<div class="form-control labels-choosen-click">选择标签</div>
+				</div>
+	        </div>
+	        <div class="form-group">
+                 <div class="col-sm-4 col-sm-offset-2">
+                     <button class="btn btn-primary" type="submit">保存</button>
+                 </div>
+             </div>
+		</form>              
+	</div>
+</div>
+<script type="text/html" id="vp_info_datas">
+	<h3 class="vp-info-line">
+		{{d.name}}（{{d.volunteerCount ? d.volunteerCount : 0}}人）
+		<@codeValidation codes=operationCodes operationCode="edit-vp">
+		<a class="text-navy" role="edit" data-id="{{d.id}}" href="javascript:;" data-name="{{d.name}}" data-grid-name="{{d.gridName}}" title="编辑"><i class="fa fa-pencil"></i></a>
+		</@codeValidation>
+		<@codeValidation codes=operationCodes operationCode="remove-vp">
+		<a class="btn btn-primary" role="remove" href="javascript:;" data-id="{{d.id}}" style="float: right" title="删除"><i class="fa fa-trash"></i></a>
+		</@codeValidation>
+	</h3>
+ 	<h4 class="vp-info-line">详情<a class="toggle-fold-vp-details" role="toggle-fold-vp-details" href="javascript:;"><i class="fa fa-angle-up text-primary fa-lg" title="收起"></i></a></h4>
+ 	<div class="vp-details">
+  		<div class="vp-info-line">
+			<div>网格</div>
+			<div>{{d.gridName}}</div>
+		</div>
+  		<div class="vp-info-line">
+  			<div>标签</div>
+  			<div class="labels">
+ 				{{# if (d.tags && d.tags.length >0) { }}
+ 					{{# layui.each(d.tags, function(index, item){ }}
+ 						<span class="label label-info">{{item.name}}</span>
+ 					{{# }); }}
+ 		        {{# } else { }}
+ 					暂无
+ 				{{# } }}
+  			</div>
+  		</div>
+  		<div class="vp-info-line">
+  			<div>领队</div>
+  			<div>
+  				<ul class="vp-leaders">
+   					{{# if (d.leaders && d.leaders.length >0) { }}
+    					{{# layui.each(d.leaders, function(l_index, leader){ }}
+   							<li>
+								<i class="img-icon avatar" style="background-image: url(img/male.png)" title="更换" role="relate-leader" data-id="{{leader.id}}" data-team-id="{{d.id}}"></i>
+								<div class="text-center name">{{leader.userName}}</div>
+								<div class="text-center opers-del "><button class="btn btn-danger" role="del-leader" data-id="{{leader.id}}" data-team-id="{{d.id}}" title="移除"><i class="fa fa-trash"></i></button></div>
+							</li>
+    					{{# }); }}
+    				{{# } }}
+					<@codeValidation codes=operationCodes operationCode="relate-l">
+  					<li><i class="fa fa-plus" role="relate-leader" data-team-id="{{d.id}}"></i></li>
+					</@codeValidation>
+  				</ul>
+  			</div>
+  		</div>
+ 	</div>
+  	<h4 class="vp-info-line">关联人力资源</h4>
+  	<div class="row vp-relates">
+		<div class="col-sm-12">
+			<div class="tabs-container">
+				<ul class="nav nav-tabs">
+					<li class="active"><a class="vp-enterprise-team-load" data-toggle="tab" href="#vp-enterprise-team"
+						aria-expanded="true">企业团队</a></li>
+					<li class=""><a class="vp-major-team-load" data-toggle="tab" href="#vp-major-team"
+						aria-expanded="false">专业团队</a></li>
+					<li class=""><a class="vp-volunteer-team-load" data-toggle="tab" href="#vp-volunteer-team"
+						aria-expanded="false">社会团队</a></li>
+					<li class=""><a class="vp-volunteers-load" data-toggle="tab" href="#vp-volunteers"
+						aria-expanded="false">个人志愿者</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="vp-enterprise-team" class="tab-pane active">
+						<div class="panel-body"></div>
+					</div>
+					<div id="vp-major-team" class="tab-pane">
+						<div class="panel-body"></div>
+					</div>
+					<div id="vp-volunteer-team" class="tab-pane">
+						<div class="panel-body"></div>
+					</div>
+					<div id="vp-volunteers" class="tab-pane">
+						<div class="panel-body"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="vp_team_datas">
+	<div class="filter-line">
+		<@codeValidation codes=operationCodes operationCode="search-g">
+		<form method="get" class="dr-search-form" style="float: right">
+			<input type="hidden" name="view" value="{{d.params && d.params.view ? d.params.view : ''}}" role="user-params">
+			<input type="hidden" name="mixTeamId" value="{{d.params && d.params.mixTeamId ? d.params.mixTeamId : ''}}" role="user-params">
+			<input type="hidden" name="groupType" value="{{d.params && d.params.groupType ? d.params.groupType : ''}}" role="user-params">
+			<input type="hidden" name="page" value="{{d.params && d.params.page ? d.params.page : ''}}" role="user-params">
+			<input type="hidden" name="limit" value="{{d.params && d.params.limit ? d.params.limit : ''}}" role="user-params">
+		    <input type="hidden" name="isFilterMixTeam" value="{{d.params && d.params.isFilterMixTeam ? d.params.isFilterMixTeam : 'false'}}" role="user-params">
+		   	<input placeholder="团队名称查询" class="form-control" type="text" name="keyword" value="{{d.params && d.params.keyword ? d.params.keyword : ''}}" role="user-params">
+		    <button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+		    <button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+		</form>
+		</@codeValidation>
+		<@codeValidation codes=operationCodes operationCode="add-g">
+		<button type="button" class="btn btn-primary" role="add-vp-team" title="添加" team-type="{{d.params && d.params.groupType ? d.params.groupType : ''}}"><i class="fa fa-plus"></i></button>
+		</@codeValidation>
+		<@codeValidation codes=operationCodes operationCode="remove-g">
+		<button type="button" class="btn btn-primary" role="remove-vp-team" title="移除"><i class="fa fa-trash"></i></button>
+		</@codeValidation>
+		<@codeValidation codes=operationCodes operationCode="ch-g-vp">
+		<button type="button" class="btn btn-primary" role="exchange-vp-team" title="变更"><i class="fa fa-random"></i></button>
+		</@codeValidation>
+	</div>
+	<table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-paging="false">
+		<thead>
+			<tr>
+				<th data-toggle="true"></th>
+				<th>团队名称</th>
+				<th>负责人</th>
+				<th>联系电话</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{# if (d.datas && d.datas.length >0) { }}
+				{{# layui.each(d.datas, function(index, item){ }}
+					<tr>
+						<td>
+							<input type="checkbox" name="vp-team-choose" data-id="{{item.id}}">
+						</td>
+						<td>{{d.params && d.params.isFilterMixTeam == 'true' ? item.groupName : item.groupBaseInfo.groupName}}</td>
+						<td>{{d.params && d.params.isFilterMixTeam == 'true' ? item.masterUserName : item.groupBaseInfo.masterUserName}}</td>
+						<td>{{d.params && d.params.isFilterMixTeam == 'true' ? item.masterUserMobile : item.groupBaseInfo.masterUserMobile}}</td>
+						
+						<td>
+						<@codeValidation codes=operationCodes operationCode="list-v">
+						<a href="javascript:void(0);" role="relate-volunteers" data-id="{{d.params && d.params.isFilterMixTeam == 'true' ? item.id : item.groupBaseInfo.id}}">
+							<i class="fa fa-connectdevelop relate-volunteers text-primary" title="查看关联的志愿者"></i>
+						</a>
+						</@codeValidation>
+						</td>
+					</tr>
+				{{# }); }}
+            {{# } else { }}
+				<tr>
+					<td colspan="5">
+						{{# if(d.params.groupType == 4) { }}
+							暂无企业团队
+						{{# } else if(d.params.groupType == 3) { }}
+							暂无专业团队
+						{{# } else if(d.params.groupType == 2) { }}
+							暂无社会团队
+						{{# } }}
+					</td>
+				</tr>
+			{{# } }}
+		</tbody>
+	</table>
+	<div id="vp-team-page-{{d.params.groupType}}"></div>
+</script>
+
+<div class="wrapper-content hide" id="add-team-to-vp">
+	<div class="datas">
+	</div>
+	<div class="opers" style="height: 40px;">
+		<button type="button" class="btn btn-primary" role="choosen-close" style="float: right">确定</button>
+	</div>
+</div>
+
+<script type="text/html" id="vp_volunteers_datas">
+<div class="filter-line">
+	<@codeValidation codes=operationCodes operationCode="search-v">
+	<form method="get" style="float: right">
+		<input type="hidden" name="isFilterMixTeam" value="{{d.params && d.params.isFilterMixTeam ? d.params.isFilterMixTeam : ''}}" role="user-params">
+		<input type="hidden" name="mixTeamId" value="{{d.params && d.params.mixTeamId ? d.params.mixTeamId : ''}}" role="user-params">
+		<input type="hidden" name="view" value="{{d.params && d.params.view ? d.params.view : ''}}" role="user-params">
+		<input type="hidden" name="page" value="{{d.params && d.params.page ? d.params.page : ''}}" role="user-params">
+		<input type="hidden" name="limit" value="{{d.params && d.params.limit ? d.params.limit : ''}}" role="user-params">
+		<input placeholder="志愿者名称" class="form-control" type="text" name="keyword" value="{{d.params && d.params.keyword ? d.params.keyword : ''}}" role="user-params">
+		<button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+		<button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+	</form>
+ 	</@codeValidation>
+	<@codeValidation codes=operationCodes operationCode="add-v">
+    <button type="button" class="btn btn-primary" role="add-vp-volunteers" title="添加"><i class="fa fa-plus"></i></button>
+    </@codeValidation>
+	<@codeValidation codes=operationCodes operationCode="remove-v">
+	<button type="button" class="btn btn-primary" role="remove-vp-volunteers" title="移除"><i class="fa fa-trash"></i></button>
+   	</@codeValidation>
+	<@codeValidation codes=operationCodes operationCode="ch-v-vp">
+	<button type="button" class="btn btn-primary" role="exchange-vp-volunteers" title="变更"><i class="fa fa-random"></i></button>
+	</@codeValidation>
+</div>
+<table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-paging="false">
+	<thead>
+		<tr>
+			<th data-toggle="true"></th>
+			<th>姓名</th>
+			<th>手机号</th>
+			<th>性别</th>
+			{{# if (d.params && d.params.isFilterMixTeam != 'true') { }}
+			<th>操作</th>
+			{{# } }}
+		</tr>
+	</thead>
+	<tbody>
+		{{# if (d.datas && d.datas.length >0) { }}
+			{{# layui.each(d.datas, function(index, item){ }}
+				<tr>
+					<td>
+						<input type="checkbox" name="vp-volunteer-choose" data-id="{{d.params && d.params.isFilterMixTeam == 'true' ? item.id : item.mixItemHashId}}">
+					</td>
+					<td>{{item.realName}}</td>
+					<td>{{item.mobile}}</td>
+					<td><i class="fa fa-{{item.gender == 1 ? 'venus' : 'mars'}}" ></i></td>
+					{{# if (d.params && d.params.isFilterMixTeam != 'true') { }}
+					<td>
+						<@codeValidation codes=operationCodes operationCode="set-l">
+						<a href="javascript: void(0);" role="set-leader" data-id="{{item.userId}}" data-name="{{item.realName}}">
+							<i class="fa fa-user-secret text-primary" title="设为领队">&nbsp;</i>
+						</a>
+						</@codeValidation>
+					</td>
+					{{# } }}
+				</tr>
+			{{# }); }}
+		{{# } else { }}
+			<tr>
+				<td colspan="{{d.params && d.params.isFilterMixTeam == 'true' ? 4 : 5}}">
+					暂无志愿者
+				</td>
+			</tr>
+		{{# } }}
+	</tbody>
+</table>
+<div id="vp-volunteers-page"></div>
+</script>
+
+<div class="wrapper-content hide" id="add-volunteers-to-vp">
+	<div class="datas">
+	
+	</div>
+	<div class="opers" style="height: 40px;">
+		<button type="button" class="btn btn-primary" role="choosen-close" style="float: right">确定</button>
+	</div>
+</div>
+<div class="wrapper-content hide" id="vp_team_member_view"></div>
+<script type="text/html" id="vp_team_member_datas">
+<div class="filter-line">
+	<form method="get">
+		<input type="hidden" name="page" value="{{d.params && d.params.page ? d.params.page : 1}}" role="user-params">
+		<input type="hidden" name="limit" value="{{d.params && d.params.limit ? d.params.limit : 10}}" role="user-params">
+		<input type="hidden" name="groupId" value="{{d.params && d.params.groupId ? d.params.groupId : ''}}" role="user-params">
+		<input placeholder="关键字模糊查询" class="form-control" type="text" name="name" value="{{d.params && d.params.name ? d.params.name : ''}}" role="user-params">
+		<button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+		<button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+	</form>
+</div>
+<table class="footable table table-stripped toggle-arrow-tiny" data-page-size="{{d.params && d.params.limit ? d.params.limit : 10}}" data-paging="false">
+	<thead>
+		<tr>
+			<th>姓名</th>
+			<th>手机号</th>
+			<th>性别</th>
+			{{# if (d.params && d.params.isFilterMixTeam != 'true') { }}
+			<th>操作</th>
+			{{# } }}
+		</tr>
+	</thead>
+	<tbody>
+		{{# if (d.datas && d.datas.length >0) { }}
+			{{# layui.each(d.datas, function(index, item){ }}
+				<tr data-id="{{item.id}}">
+					<td>{{item.realName?item.realName:'暂无'}}</td>
+					<td>{{item.mobile?item.mobile:'暂无'}}</td>
+					<td>{{item.gender == 1 ? '女' : '男'}}</td>
+					{{# if (d.params && d.params.isFilterMixTeam != 'true') { }}
+					<td>
+						<a href="javascript: void(0);" role="set-leader" data-id="{{item.userId}}" data-name="{{item.realName}}">
+							<i class="fa fa-user-secret text-primary" title="设为领队">&nbsp;</i>
+						</a>
+					</td>
+					{{# } }}
+				</tr>
+			{{# }); }}
+		{{# } else { }}
+			<tr>
+				<td colspan="{{d.params && d.params.isFilterMixTeam == 'true' ? 4 : 5}}">
+					暂无志愿者
+				</td>
+			</tr>
+		{{# } }}
+	</tbody>
+</table>
+<div id="vp_team_member-page"></div>
+</script>
+
+<script>
+	VolunteerProcessionManage.init();
+	
+</script>

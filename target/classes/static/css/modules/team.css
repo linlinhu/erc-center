@@ -1,0 +1,168 @@
+div[data-id="volunteer-team/index"],div[data-id="major-team/index"],div[data-id="enterprise-team/index"]{
+	height:100%
+}
+.team-content, .team-content .row, .teamList{
+	height:100%;
+}
+.teamList{
+	padding:0;
+    border-right:1px solid #eeeeee;
+    overflow:auto;
+    scrollbar-base-color:rgb(243, 245, 245)
+}
+.teamList .ibox-title h5 {
+	color: #333333;
+}
+.teamList nav{
+    z-index: 2001;
+    height: 100%;
+    min-width:180px;
+}
+.teamList .team-title p {
+	margin:5px;
+	padding:5px;
+	cursor: pointer;
+	color:#999999;
+}
+.teamList .team-title p:hover {
+	background: #F3F5F5;
+}
+.teamList .team-title p.actived {
+	color:#2480CC;
+}
+
+.teamList nav .ibox-title {
+	border-bottom: 1px solid #eeeeee;
+}
+.teamList nav .team-btns {
+	position:absolute;
+	bottom:0;
+	width:100%;
+	min-width:170px;
+}
+.teamList nav .addTeam,
+.teamList nav .importTeam {
+	
+	padding:10px 16px;
+	
+	width:100%;
+	cursor: pointer;
+	border-top:1px solid #eeeeee;
+	border-bottom:1px solid #eeeeee
+}
+.teamList nav .team-btns h5 {
+	font-size: 14px;
+	font-weight: normal;
+}
+.team-center {
+	padding-top:0;
+}
+.team-center .team-des {
+	padding: 5px 0 10px 0;
+	background: #F3F5F5;
+	margin:0;
+}
+.team-center .team-des h4 {
+	padding-left: 15px;
+	line-height:36px;
+	font-size:16px;
+	color:#666666;
+}
+.team-center .team-des h4 span {
+	font-size:14px;
+}
+.team-center .team-des div span {
+	line-height:28px;
+	color: #999999;
+}
+.team-center .team-des div i {
+	font-size:16px;
+}
+.team-center .team-des {
+	position:relative;
+}
+.team-center .team-des .volunteerTeamStatus-btns {
+	position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+.team-center .team-des .volunteerTeamStatus-btns  button {
+	margin:10px;
+}
+.team-center .ibox-title h5 {
+	margin:0;
+}
+.team-center .team-member {
+	margin-top:10px;
+}
+.team-center .team-member .checkbox-inline {
+	position:absolute;
+	top:10px;
+	right:10px;
+}
+.team-center .team-member .removeMember-icon {
+	display:none;
+	position:absolute;
+	top:10px;
+	right:25px;
+	height:16px;
+	width:16px;
+	background-image: url('../../img/icon-remove.png');
+	background-repeat: no-repeat;
+	background-position: 1px 1px;
+	background-size: 14px 14px;
+}
+.team-center .team-member .contact-box:hover .removeMember-icon,
+.team-center .team-member .contact-box:hover .volunteerChangeTeam {
+	display: block;
+}
+.team-center .team-member .volunteerChangeTeam {
+	display:none;
+	position:absolute;
+	bottom:20px;
+	right:28px;
+}
+.team-content .filter-line {
+	margin-left:0px;
+}
+ .team-content .filter-line .btn-group-change div{
+	float:none;
+}
+.team-content .filter-line form {
+	padding:0;
+}
+
+.team-content .btn-group-change {
+	padding:0;
+	margin:0;
+}
+.team-member .contact-box {
+	background-color:  rgb(243, 245, 245);
+}
+.team-member p {
+	margin-top:4px;
+}
+.team-member .avatar {
+	border-radius: 100% 100%;
+}
+.changeTeam-open .checkbox-inline {
+	display:block;
+	margin-bottom:10px;
+}
+.contact-box p, .contact-box span {
+	color: #999999;
+}
+.contact-box strong, .contact-box div {
+	color: #666666;
+}
+#skill-assess .irs-disabled {
+	opacity: 1;
+}
+#skill-assess li {
+	height:65px;
+}
+#skill-assess li div:first-child {
+	margin-top:18px;
+}
+
+

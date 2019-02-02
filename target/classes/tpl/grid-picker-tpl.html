@@ -1,0 +1,56 @@
+<div class="wrapper-content hide" id="grid-picker-panel">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="ztree-panel" style="height: 450px;">
+				<ul class="ztree" id="grid-picker-region-tree"></ul>
+			</div>
+		</div>
+		<div class="col-sm-8 datas">
+		</div>
+	</div>
+	<div class="opers" style="height: 40px;text-align: right">
+		<button type="button" class="btn btn-primary" role="choosen-close">确定</button>
+  		<!-- <button type="button" class="btn btn-white" role="close-panel">取消</button> -->
+	</div>
+</div>
+<script type="text/html" id="grid_picker_datas">
+	<div class="filter-line">
+		<form method="get">
+			<input type="hidden" name="regionId" value="{{d.params && d.params.regionId ? d.params.regionId : ''}}" role="user-params">
+			<input type="hidden" name="page" value="{{d.params && d.params.page ? d.params.page : ''}}" role="user-params">
+			<input type="hidden" name="limit" value="{{d.params && d.params.limit ? d.params.limit : ''}}" role="user-params">
+			<input placeholder="网格名称" class="form-control" type="text" name="keyword" value="{{d.params && d.params.keyword ? d.params.keyword : ''}}" role="user-params">
+			<button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+			<button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+		</form>
+	</div>
+	<table class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" data-paging="false">
+		<thead>
+			<tr>
+				<th></th>
+				<th>网格名称</th>
+				<th>负责人</th>
+				<th>联系电话</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{# if (d.datas && d.datas.length >0) { }}
+				{{# layui.each(d.datas, function(index, item){ }}
+					<tr>
+						<td><input type="checkbox" name="grid-choosen" data-id="{{item.id}}" data-others="{{item.id}}-{{item.name}}"></td>
+						<td>{{item.name}}</td>
+						<td>{{item.chargePersonName}}</td>
+						<td>{{item.chargePersonMobile}}</td>
+					</tr>
+				{{# }); }}
+			{{# } else { }}
+				<tr>
+					<td colspan="5">
+						暂无可用网格数据
+					</td>
+				</tr>
+			{{# } }}
+		</tbody>
+	</table>
+	<div id="grid-picker-page"></div>
+</script>

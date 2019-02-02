@@ -1,0 +1,248 @@
+<style>
+	.index-wall {
+		background-color: rgb(243, 245, 245);
+	}
+	.index-wall .ibox-content {
+		min-height: 80px;
+		padding-top: 0;
+	}
+	.gis-options {
+		position: absolute;
+		z-index: 10;
+		right: 25px;
+		top: 5px;
+	}
+	
+	#realtime-clue-manage .danmu {
+		position: absolute;
+		z-index: 9;
+		background-color: rgba(255, 255, 255, .6);
+		color: #444
+		font-size: 16px;
+		padding: 5px;
+		border-radius: 5px;
+	}
+	#realtime-clue-manage .clues-lst {
+		position: absolute;
+		right: 0;
+		background: rgba(255, 255 ,255, .6);
+		top: 0;
+		padding: 8px;
+		width: 240px;
+		height: 100%;
+		overflow: hidden;
+		overflow-y: scroll;
+		z-index: 10;
+	}
+	
+	#realtime-clue-manage .clues-lst > ul > li {
+		background: rgba(230,138, 30, .8);
+		padding: 5px;
+		color: #fff;
+		border-radius: 5px;
+		cursor: pointer;
+		margin-bottom: 8px;
+	}
+	#realtime-clue-manage .clues-lst > ul > li i.avatar {
+		width: 30px;
+		height: 30px;
+		border-radius: 30px;
+		background-color: #ccc;
+		vertical-align: middle;
+		margin-right: 8px;
+	}
+	#realtime-clue-manage .fixed-wrap {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0,0,0,0);
+		z-index: 11;
+	}
+	#realtime-clue-manage .fixed-wrap > .cnt {
+		position: absolute;
+		width: 460px;
+		height: 300px;
+		top: 50%;
+		margin-top: -150px;
+		left: 50%;
+		margin-left: -200px;
+		border-radius: 5px;
+		padding: 30px;
+		padding-bottom: 50px;
+		padding-top: 40px;
+		line-height: 25px;
+		color: #fff;
+		font-size: 16px;
+	}
+	#realtime-clue-manage .fixed-wrap > .cnt a.close{
+		position: absolute;
+		top: 10px;
+		right: 15px;
+	}
+	#realtime-clue-manage .fixed-wrap > .cnt .col-sm-3 {
+		padding: 0;
+		padding-left: 15px;
+		font-weight: bold;
+	}
+	#realtime-clue-manage .fixed-wrap > .cnt .col-sm-9 {
+		padding: 0;
+		padding-right: 15px;
+	}
+	
+	#realtime-clue-manage .fixed-wrap > .cnt .col-sm-12 {
+		margin-top: 10px;
+	}
+	
+	#realtime-clue-manage .fixed-wrap > .cnt .line-name,
+	#realtime-clue-manage .fixed-wrap > .cnt .line-value {
+		float: left;
+	}
+	#realtime-clue-manage .fixed-wrap > .cnt > .bot-btns {
+		position: absolute;
+		bottom: 15px;
+		width: 100%;
+		text-align: center;
+	}
+	
+	#realtime-clue-manage .fixed-wrap > .cnt > .bot-btns .btn {
+		width: 100px;
+	}
+</style>
+<div class="wrapper-content" id="gisManage">
+	<div class="row">
+		<div class="col-sm-4">
+		    <div class="ibox float-e-margins index-wall increase-volunteer">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">本月累计</span>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins font-bold text-warning"><span class="amount">-</span>人</h1>
+                    <div class="stat-percent"><span class="percent">-</span>% <i class="fa fa-level-up"></i>
+                    </div>
+                    <small>新增志愿者</small>
+                </div>
+            </div>
+		</div>
+		
+		<div class="col-sm-4">
+		    <div class="ibox float-e-margins index-wall">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">本月累计</span>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins font-bold text-danger">12人</h1>
+                    <div class="stat-percent">3% <i class="fa fa-level-up"></i>
+                    </div>
+                    <small>发生应急事件</small>
+                </div>
+            </div>
+		</div>
+		<div class="col-sm-4">
+		    <div class="ibox float-e-margins index-wall">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">本月累计</span>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins font-bold text-info">220人</h1>
+                    <div class="stat-percent">2% <i class="fa fa-level-up"></i>
+                    </div>
+                    <small>参与应急活动志愿者</small>
+                </div>
+            </div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div id="gis-statistics-manage">
+				<!-- 
+				<select class="gis-options">
+					<option>Gis定时定位分布</option>
+					<option>Gis注册分布</option>
+					<option>Gis签到分布</option>
+				</select>
+				 -->
+	    		<div id="gis-statistics-map" style="width: 100%;height: 100%;"></div>
+    		</div>
+		</div>
+		<div class="col-sm-6">
+			<div id="realtime-clue-manage" style="width: 100%;height: 100%;">
+				<div class="cnt-wrap" style="position: relative; overflow: hidden">
+	    			<div id="rt-clue-map" style="width: 100%;"></div>
+		    		<div class="clues-lst hide">
+		    			<ul>
+		    				<li>
+		    					<div class="ln-30">
+			    					<i class="img-icon avatar"></i>
+			    					<span>热心市民2018</span>
+		    					</div>
+		    					<div>
+		    						这边有个恐怖分子带着炸药包准备炸IFS
+		    					</div>
+		    				</li>
+		    				<li style="background-color: rgb(139, 195, 74, .8)">
+		    					<div>
+			    					<i class="img-icon avatar"></i>
+			    					<span>热心市民2017</span>
+		    					</div>
+		    					<div>
+		    						这边有个碰瓷儿的闹事导致了交通严重堵塞
+		    					</div>
+		    				</li>
+		    			</ul>
+		    		</div>
+				</div>
+				<script type="text/html" id="clue_detail_data">
+				<div class="cnt" style="background-color: {{d.clueType.extend.fillColor}}">
+					<a class="close"><i class="fa fa-remove"></i></a>
+					<div class="row">
+						<div class="col-sm-3">联系电话：</div>
+						<div class="col-sm-9">{{d.mobile ? d.mobile : '暂无'}}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">事发地点：</div>
+						<div class="col-sm-9">{{d.address ? d.address.fullAddress : '暂无'}}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							{{d.content ? d.content : '暂无'}}
+						</div>
+					</div>
+					<div class="row bot-btns">
+						<div class="col-sm-6"><button class="btn btn-white ignore">忽略</button></div>
+						<div class="col-sm-6"><button class="btn btn-white mark">标记线索</button></div>
+					</div>
+				</div>
+				</script>
+				<div class="fixed-wrap hide" id="clue-detail-view"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+let topRegion = JSON.parse('<@obj2json obj=topRegion ></@obj2json>');
+/**
+ * 新增志愿者数量查询
+ */
+VolunteerInterface.getIncreaseInfo(null, function(res) {
+	let increaseNum = res.k,
+		increasePer = res.v;
+	$('#gisManage .increase-volunteer .amount').html(increaseNum);
+	$('#gisManage .increase-volunteer .percent').html(increasePer);
+	
+});
+/**
+ * 志愿者注册分布地图加载
+ */
+GisManage.init({
+	containerId: 'gis-statistics-map',
+	topRegion: topRegion
+	
+});
+RealTimeClueManage.init({
+	containerId: 'rt-clue-map',
+	topRegion: topRegion
+});
+
+</script>

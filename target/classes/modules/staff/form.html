@@ -1,0 +1,158 @@
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><#if info??>编辑<#else>添加</#if>工作人员</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('index')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+               		 <form method="get" class="form-horizontal" id="staff-form">
+             		 	<input type="hidden" name="id">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*姓名</label>
+                            <div class="col-sm-10">
+								<input class="form-control" placeholder="输入姓名" type="text" name="realName" value="${info.realName!''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*性别</label>
+                            <div class="col-sm-10">
+                            	<label class="checkbox-inline i-checks"><input type="radio" value="0" name="gender" checked> <i></i> 男</label>
+                            	<label class="checkbox-inline i-checks"><input type="radio" value="1" name="gender"> <i></i> 女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*手机号</label>
+                            <div class="col-sm-10">
+								<input class="form-control" placeholder="输入手机号" type="text" name="mobile" value="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">部门</label>
+                            <div class="col-sm-10">
+                            	<input class="form-control" type="hidden" name="orgIds">
+								<input class="form-control orgchart-choosen-click" name="orgNames" readOnly placeholder="请选择所属部门">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+let staffOrgChart = [];
+<#if info??>
+	$('#staff-form input[name="id"]').val('${info.id}');
+	$('#staff-form input[name="mobile"]').val('${info.mobile}');
+	$('#staff-form input[name="orgId"]').val('${info.orgId}');
+	$('#staff-form input[name="orgName"]').val('${info.orgName}');
+	<#if info.gender == '男'>
+		$('#staff-form input[value="0"]').attr('checked','checked');
+		$('#staff-form input[value="0"]').addClass('checked');
+	<#else>
+		$('#staff-form input[value="1"]').attr('checked','checked');
+		$('#staff-form input[value="1"]').addClass('checked');
+	</#if>
+	<#if info.personOrg??>
+	staffOrgChart = JSON.parse('<@obj2json obj=info.personOrg ></@obj2json>');
+	</#if>
+</#if>
+let staffForm = (function() {
+	let init = function(p, callback) {
+			let formSelector = '#staff-form';
+			
+			$('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+			p = p ? p : {};
+			renderOrgs(p.orgChart,formSelector);
+			$(formSelector + ' .orgchart-choosen-click').unbind('click').bind('click', function() {
+				let orgChart = p.orgChart ? p.orgChart : [];
+	
+				orgChartPicker.init({
+					checkedNodes: [],
+					multiSelect: true
+				}, function(res) {
+					p.orgChart = res;
+					renderOrgs(res,formSelector);
+				});
+			});
+			$(formSelector + ' input[name=mobile]').on('input', function(){
+				if($(this).val().length == 11){
+					$(this).trigger('blur').trigger('focus');
+				}
+			});
+			$(formSelector).validate({
+			    rules: {
+			    	mobile: {
+		                required: true,
+		                phone: true
+		            },
+		            realName: {
+		            	required: true,
+		            	rangelength: [1,20],
+		            	isName: true
+		            },
+		            gender: {
+		            	required: true
+		            }
+			    },
+			    messages: {
+			    	mobile: {
+		                required: icon+'请填写手机号码',
+		                phone: icon + '请填写11位有效的手机号码',
+		            },
+		            realName: {
+		            	required: icon + "请输入姓名",
+		     	        rangelength: icon + "姓名的长度介于2-20之间",
+		     	        isName: icon + "不能以空格开始或结尾"
+		            },
+		            gender: {
+		            	required: icon + "请选择性别"
+		            }	
+			    },
+			    submitHandler:function(form){
+			    	var data = $(form).serializeObject();
+			    	
+			    	operation({
+		        		'moduleName': 'staff', 
+		        		'oper': 'save',
+		        		'params': data
+		        	},function(){
+		        		goPage('index');
+		        		layer.msg('保存成功',{icon:6,time:1500});
+		        	}); 	
+			    } 
+			});
+		},
+		renderOrgs = function(data,el){
+			let orgChartNames = [],
+				orgChartIds = [],
+				temp = data?data:[];
+			temp.forEach(function(value,index,array){
+				orgChartNames.push(value.name?value.name:value.orgName);
+				orgChartIds.push(value.id?value.id:value.orgId);
+			});
+			$(el + ' .orgchart-choosen-click').val(orgChartNames.join(','));
+			$(el + ' input[name="orgIds"]').val(orgChartIds.join(','));
+		};
+		
+	return {
+		init: init
+	}
+}());
+staffForm.init({orgChart:staffOrgChart});
+</script>

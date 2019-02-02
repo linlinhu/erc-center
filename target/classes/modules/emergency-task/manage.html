@@ -1,0 +1,85 @@
+<div class="wrapper-content emergency-task">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins" style="position: relative">
+				<div class="ibox-title">
+					<h5></h5>
+					<div class="ibox-tools">
+						<a class="btn btn-primary" href="javascript:goPage('form')"
+							alt="添加任务" title="添加任务"> <i class="fa fa-plus"></i>
+						</a>
+					</div>
+				</div>
+				<div class="ibox-content">
+					<form method="get" id="emergency-task-searchform">
+						<div class="filter-line">
+							<input type="hidden" name="page">
+							<input class="form-control region-choosen-click" type="text" placeholder="选择区域" readonly>
+							<select class="form-control" placeholder="选择事件分类">
+								<option>公益事件</option>
+								<option>社会灾害</option>
+							</select>
+							<button type="button" class="btn btn-primary" role="submit">
+								<i class="fa fa-search"></i>
+							</button>
+							<button type="button" class="btn btn-default" role="reset">
+								<i class="fa fa-refresh"></i>
+							</button>
+						</div>
+					</form>
+					<table class="footable table table-stripped toggle-arrow-tiny"
+						id=emergency-task-table data-page-size="10"
+						data-paging="false">
+						<thead>
+							<tr>
+								<th data-toggle="true">状态</th>
+								<th>标题</th>
+								<th>日期</th>
+								<th>紧急度</th>
+								<th>支援组织</th>
+								<th data-sort-ignore="true">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><label>进行中</label></td>
+								<td>天府新谷楼梯坍塌</td>
+								<td>18-02-107 12:45</td>
+								<td>紧急</td>
+								<td>高新医疗志愿者组织</td>
+								<td>
+									<a href="javascript:;" title="撤销" class="revoke"><i class="fa fa-unlock text-primary"></i></a>&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td><label>已取消</label></td>
+								<td>天府新谷楼梯坍塌</td>
+								<td>18-02-107 12:45</td>
+								<td>普通</td>
+								<td>高新医疗志愿者组织</td>
+								<td>
+									<a href="javascript:goPage('form');" title="编辑"><i class="fa fa-pencil text-primary"></i></a>&nbsp;
+									<a href="javascript:;" title="删除" class="remove"><i class="fa fa-trash text-primary"></i></a>&nbsp;
+									<a href="javascript:;" title="发布" class="release"><i class="fa fa-lock text-primary"></i></a>&nbsp;
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="text-right" id="emergency-task-page"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#emergency-task-searchform .region-choosen-click').click(function(){
+		regionPicker.init({
+			checkedNodes: []
+		}, function(res) {
+			$('#emergency-task-searchform .region-choosen-click').val(res.name);
+		});
+	});
+	let emergencyTaskFn = new emergencyEvent();
+	emergencyTaskFn.init({subModuleName:'emergency-task'});	
+</script>

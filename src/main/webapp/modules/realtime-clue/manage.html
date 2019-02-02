@@ -1,0 +1,159 @@
+<style>
+#realtime-clue-manage .danmu {
+	position: absolute;
+	z-index: 9;
+	background-color: rgba(255, 255, 255, .6);
+	color: #444
+	font-size: 16px;
+	padding: 5px;
+	border-radius: 5px;
+}
+#realtime-clue-manage .clues-lst {
+	position: absolute;
+	right: 15px;
+	background: rgba(255, 255 ,255, .6);
+	top: 0;
+	padding: 8px;
+	width: 240px;
+	height: 100%;
+	overflow: hidden;
+	overflow-y: scroll;
+	z-index: 10;
+}
+
+#realtime-clue-manage .clues-lst > ul > li {
+	background: rgba(230,138, 30, .8);
+	padding: 5px;
+	color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-bottom: 8px;
+}
+#realtime-clue-manage .clues-lst > ul > li i.avatar {
+	width: 30px;
+	height: 30px;
+	border-radius: 30px;
+	background-color: #ccc;
+	vertical-align: middle;
+	margin-right: 8px;
+}
+#realtime-clue-manage .fixed-wrap {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0);
+	z-index: 11;
+}
+#realtime-clue-manage .fixed-wrap > .cnt {
+	position: absolute;
+	width: 460px;
+	height: 300px;
+	top: 50%;
+	margin-top: -150px;
+	left: 50%;
+	margin-left: -200px;
+	border-radius: 5px;
+	padding: 30px;
+	padding-bottom: 50px;
+	padding-top: 40px;
+	line-height: 25px;
+	color: #fff;
+	font-size: 16px;
+}
+#realtime-clue-manage .fixed-wrap > .cnt a.close{
+	position: absolute;
+	top: 10px;
+	right: 15px;
+}
+#realtime-clue-manage .fixed-wrap > .cnt .col-sm-3 {
+	padding: 0;
+	padding-left: 15px;
+	font-weight: bold;
+}
+#realtime-clue-manage .fixed-wrap > .cnt .col-sm-9 {
+	padding: 0;
+	padding-right: 15px;
+}
+
+#realtime-clue-manage .fixed-wrap > .cnt .col-sm-12 {
+	margin-top: 10px;
+}
+
+#realtime-clue-manage .fixed-wrap > .cnt .line-name,
+#realtime-clue-manage .fixed-wrap > .cnt .line-value {
+	float: left;
+}
+#realtime-clue-manage .fixed-wrap > .cnt > .bot-btns {
+	position: absolute;
+	bottom: 15px;
+	width: 100%;
+	text-align: center;
+}
+
+#realtime-clue-manage .fixed-wrap > .cnt > .bot-btns .btn {
+	width: 100px;
+}
+</style>
+<div class="wrapper-content" id="realtime-clue-manage">
+	<div class="row">
+		<div class="col-sm-12 cnt-wrap" style="position: relative; overflow: hidden">
+    		<div id="rt-clue-map" style="width: 100%;"></div>
+    		<div class="clues-lst hide">
+    			<ul>
+    				<li>
+    					<div class="ln-30">
+	    					<i class="img-icon avatar"></i>
+	    					<span>热心市民2018</span>
+    					</div>
+    					<div>
+    						这边有个恐怖分子带着炸药包准备炸IFS
+    					</div>
+    				</li>
+    				<li style="background-color: rgb(139, 195, 74, .8)">
+    					<div>
+	    					<i class="img-icon avatar"></i>
+	    					<span>热心市民2017</span>
+    					</div>
+    					<div>
+    						这边有个碰瓷儿的闹事导致了交通严重堵塞
+    					</div>
+    				</li>
+    			</ul>
+    		</div>
+		</div>
+	</div>
+	
+<script type="text/html" id="clue_detail_data">
+<div class="cnt" style="background-color: {{d.clueType.bgColor}}">
+	<a class="close"><i class="fa fa-remove"></i></a>
+	<div class="row">
+		<div class="col-sm-3">联系电话：</div>
+		<div class="col-sm-9">{{d.mobile}}</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-3">事发地点：</div>
+		<div class="col-sm-9">{{d.address.fullAddress}}</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			{{d.content}}
+		</div>
+	</div>
+	<div class="row bot-btns">
+		<div class="col-sm-6"><button class="btn btn-white ignore">忽略</button></div>
+		<div class="col-sm-6"><button class="btn btn-white mark">标记线索</button></div>
+	</div>
+</div>
+</script>
+<div class="fixed-wrap hide" id="clue-detail-view"></div>
+</div>
+<script>
+
+
+realTimeClueManage.init({
+	containerId: 'rt-clue-map',
+	topRegion: JSON.parse('<@obj2json obj=topRegion ></@obj2json>')
+});
+</script>

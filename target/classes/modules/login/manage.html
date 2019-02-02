@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>银玺·应急救援管理系统 - 登录</title>
+	<link href="img/favicon.ico" rel="shortcut icon">
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <style>
+    	#loginForm input{
+    		color:#666;
+    	}
+    	.input-tips{
+    		margin-left:5px;
+    		margin-bottom:0!important;
+    		color:#fff;
+    	}
+    	.signinpanel .form-control{
+    		margin-bottom:15px;
+    	}
+    	.signinpanel form{
+    		background: rgba(255, 255, 255, 0.3);
+    	}
+    	.no-margins{
+    		/* color:#1A7BB9; */
+    		color:#fff;
+    	}
+    	
+    	.m-t i.fa {
+    		color:#1A7BE6;
+    	}
+    	div.signin{
+    		width:100%;
+    		height:100%;
+		    background-image:url("img/login-background.jpg");
+		    background-origin:center;
+		    background-attachment:fixed;
+		    background-repeat: no-repeat;
+		    -webkit-background-size: cover;
+		    -moz-background-size: cover;
+		    -o-background-size: cover;
+		    background-size: cover;
+		    color: rgba(255,255,255,.95);
+		    overflow:hidden;
+		}
+		.ans-que{
+			position:relative;
+		}
+		.answer{
+			padding:6px 12px;
+			margin-top:15px;
+			width:127px;
+			height:30px;
+			
+		}
+		.question-img{
+			display:inline-block;
+			position:absolute;
+			top:0;
+			right:-20px;
+			width:120px;
+			height:45px;
+			e-index:999;
+		}
+		.question-img img{
+			height:30px;
+			width:80px;
+		}
+    </style>
+</head>
+<body auto-flag="loginPageWelcomeU">
+	<div class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="signin-info">
+                    <div class="logopanel m-b">
+                        <h1>银玺·应急救援管理系统</span></h1>
+                    </div>
+                    <div class="m-b"></div>
+                    <h4>欢迎登录！</strong></h4>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <form class="m-t" role="form" action="/loginIn" id="loginForm">
+                    <h4 class="no-margins">登录入口</h4>
+                    <input type="text" class="form-control uname" name="username" placeholder="账号/手机号码/电子邮箱" >
+                    <input type="password" class="form-control pword m-b" name="password" placeholder="密码" >
+                    <span class="help-block m-b-none input-tips password-tips"><i class="fa fa-info-circle"></i> 请输入由数字、英文组成的密码</span>
+                    <div class="ans-que">
+                    	<input type="text" class="form-control answer" name="code" placeholder="验证码" >
+                    	<span class="question-img" >
+                    		<img src="/getValidImg" onerror="this.src='img/reload.png'" onClick="this.src='/getValidImg?' + new Date().getTime();" />
+                    	</span>
+                    </div>
+                     <span class="help-block m-b-none input-tips password-tips"><i class="fa fa-info-circle"></i> 请输入图片中的计算结果</span>
+                    <button class="btn btn-primary btn-block" style="height: 35px;">登录</button>
+                </form>
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">Copyright &copy; 2010-2015,www.emininfo.com,All rights reserved  蜀ICP备16033956号</div>
+        </div>
+    </div>
+    </div>
+</body>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js?v=3.4.0"></script>
+
+<script src="js/plugins/validate/jquery.validate.min.js"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/jquery.md5.js"></script>
+<script>
+$(function(){
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	sessionStorage.isModify = false;
+    $("#loginForm").validate({
+        rules: {
+        	username: {
+                required: true,
+                minlength: 2  
+            },
+            password: {
+                required: true,
+                passwordR:true,
+                rangelength:[6,20]
+            },
+            code:{
+                required: true
+            }
+        },
+        messages: {
+        	username: {
+                required: icon + '请输入账号',
+                minlength: icon + "账号不少于2个字符",
+                
+            },
+            password: {
+                required: icon + '请输入密码',
+                passwordR:icon + '密码格式错误',
+                rangelength: icon + "密码长度为6-20"
+            },
+            code:{
+            	required: icon + '请填写验证码',
+            }
+        },
+        submitHandler:function(form){
+        	var data = $(form).serializeObject();
+        	var url = form.action;
+        	
+        	data.password = $.md5(data.password)
+        	loading = layer.load();
+        	$.ajax({
+            	url:url,
+            	type:"post",
+            	dataType:"json",
+            	data:data,
+            	success:function(res, status, xhr){   
+            		layer.close(loading);
+            		if (!res.success) {
+           				layer.msg(res.message ? res.message : '登录失败',{icon: 5, time: 200000000});
+           				$('.question-img img').attr('src','/getValidImg?' + new Date().getTime())
+            		} else {
+            			localStorage.erc_login_user = JSON.stringify(res.person ? res.person : {});
+            			localStorage.erc_system_token = res.data.token;
+            			localStorage.erc_system_ecmId = res.ecmId;
+            			localStorage.erc_system_ecmName = res.ecmName;
+            			
+            			sessionStorage.isLogout = 'false';
+            			window.location.replace("/");
+            		} 
+            	},
+            	error:function(){
+            		setTimeout(function(){
+            			layer.alert('抱歉，资源访问失败',{
+            				closeBtn: 1
+            			},
+            			function(){
+        	    			layer.close(loading);
+        	   				history.go(-1);
+        	    			layer.closeAll('dialog');
+            			}
+            			);
+            			$('.question-img img').attr('src','/getValidImg?' + new Date().getTime())
+            		},1000)
+            	}
+            })
+        	
+        }     
+    });
+    $.validator.addMethod("passwordR",function(value,element,params){  
+        var passwordR = /^[0-9a-zA-Z]{0,}[0-9a-zA-Z]{1}$/;  
+        return this.optional(element)||(passwordR.test(value));  
+    },"*密码格式错误");
+})
+
+$.fn.serializeObject = function(){
+	var o = {};
+	var a = this.serializeArray();
+	$.each(a, function() {
+		if (o[this.name] !== undefined) {
+			if (!o[this.name].push) {
+				o[this.name] = [o[this.name]];
+			}
+			o[this.name].push(this.value || '');
+		} else {
+			o[this.name] = this.value || '';
+		}
+	});
+	return o;
+};
+
+</script>
+</html>

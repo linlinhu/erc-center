@@ -1,0 +1,171 @@
+<style>
+	.contact-box a.remove-icon {
+		position: absolute; 
+		top: 10px; 
+		right: 25px;
+		display: none;
+		height:16px;
+		width:16px;
+		background-image: url('../../img/icon-remove.png');
+		background-repeat: no-repeat;
+		background-position: 1px 1px;
+		background-size: 14px 14px;
+	}
+	
+	.contact-box:hover a.remove-icon {
+		display: block;
+	}
+	a.remove-icon:hover {
+		color: red;
+	}
+	.avatar {
+		border-radius: 100% 100%;
+	}
+	#volunteer-manage p {
+		margin-top:4px;
+	}
+	.volunteerStatus-btns {
+		position: absolute;
+	    right: 30px;
+	    bottom: 20px;
+	}
+	.volunteerStatus-btns button {
+		margin:10px;
+	}
+</style>
+<div class="wrapper-content" id="volunteer-manage">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="ibox float-e-margins">
+		        <div class="ibox-title">
+		            <h5>志愿者信息中心</h5>
+		            <div class="ibox-tools">
+		            	<@codeValidation codes=operationCodes operationCode="add">
+		                <a class="btn btn-primary" href="javascript:goPage('form')" alt="志愿者招募" title="志愿者招募">
+		                    <i class="fa fa-plus"></i>
+		                </a>
+		                </@codeValidation>
+		                <@codeValidation codes=operationCodes operationCode="import-v">
+		                <a class="btn btn-primary import" href="javascript:void(0)" alt="批量导入" title="批量导入">
+		                    <i class="fa fa-copy"></i>
+		                </a>
+		                </@codeValidation>
+		            </div>
+		        </div>
+		        <div class="ibox-content">
+		        	<@codeValidation codes=operationCodes operationCode="search">
+		        	<div class="filter-line">
+	                	<form method="get" class="dr-search-form" id="volunteer-searchform">
+	                		<input class="form-control" type="hidden" name="page" value="${page!''}">
+                            <input placeholder="按名字查询" class="form-control" type="text" name="name" value="${name!''}" role="user-params">
+                            <input placeholder="按手机号码查询" class="form-control" type="text" name="mobile" value="${mobile!''}" role="user-params">
+                       		<select class="form-control" type="text" name="scope" role="user-params">
+                       			<option value="">全部</option>
+                       		</select>
+                            <button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+	                 	</form>
+	                </div>
+	                </@codeValidation>
+                    <#if pages.resultList?? && pages.resultList?size gt 0 >
+	                <div class="row">
+                    	<#list pages.resultList as d>
+	                	<div class="col-sm-4 col-xs-12">
+	                		<div class="contact-box" style="background-color: rgb(243, 245, 245)">
+	                			<@codeValidation codes=operationCodes operationCode="remove">
+	                				<a href="javascript: ;" class="remove-icon" data-id="${d.id}"  title="删除"></a>
+	                			</@codeValidation>
+		                        <div class="col-sm-4 col-xs-12">
+		                            <div class="text-center">
+		                   				 <a href="javascript: ;" class="detail-icon" data-id="${d.id}" title="点击查阅详情">
+		                            		<i class="img-icon avatar" style="width: 60px; height: 60px; background-image:
+		                            		<#if d.avatar.picUrls?? && d.avatar.picUrls!=''>
+		                            			url('${d.avatar.picUrls}')
+		                            		<#else>
+		                            			url('img/male.png')
+		                            		</#if>
+		                            		"></i>
+		                    			</a>
+		                    			<div class="m-t-xs font-bold">
+		                    				<p>
+			                    				<#if d.scope == 10>
+			                    					申报中
+			                    				<#elseif d.scope == 20>	
+			                    					已录用
+			                    				<#elseif d.scope == 60>
+			                    					已淘汰
+			                    				</#if>
+		                    				</p>
+		                    				<p>
+			                    				<#if d.proAbilityClassTagNames?? && d.proAbilityClassTagNames?length gt 0>
+			                    					${d.proAbilityClassTagNames}
+			                    				<#else>
+			                    					暂未分类${d.proAbilityClassTagNames}
+			                    				</#if>
+		                    				</p>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-sm-8 col-xs-12">
+		                            <h3><strong>
+		                            ${d.realName!'无名'} 
+		                            <@codeValidation codes=operationCodes operationCode="edit">
+		                            	<span onclick="goPage('form?id=${d.id}')" title="编辑"><i class="fa fa-pencil text-primary"></i></span>
+		                            </@codeValidation>
+		                            &nbsp;
+		                            <#if d.gender == 1>女<#else>男</#if>
+		                            </strong></h3>
+		                            <p><i class="fa fa-phone text-info"></i> ${d.mobile}</p> 
+		                            <p class="addr ellipsis"><i class="fa fa-map-marker text-info"></i> ${d.contactAddr!'-'}</p>
+		                            <p class="ellipsis">
+			                           	<#if d.serviceFields?? && d.serviceFields?size gt 0>
+		                                	服务领域：<#list d.serviceFields as sf>
+		                                		${sf.name}&nbsp;
+		                                	</#list>
+	                                	<#else>
+	                                		未知领域
+	                                	</#if>
+		                            </p>
+		                            <p>
+		                           	<#if d.knowledgeSkills?? && d.knowledgeSkills?size gt 0>
+		                           		知识技能 ：<#list d.knowledgeSkills as ks>${ks.name}&nbsp;</#list>
+		                           	<#else>
+		                           		未知技能
+		                           	</#if>
+		                            </p>
+		                            <p class="ellipsis">累计参与${d.participationCounts!'0'}次行动</p>
+		                        </div>
+		                        <div class="clearfix"></div>
+			                </div>
+	                	</div>
+	                    </#list>
+	                </div>
+	                <div class="text-right" id="volunteer-page"></div>
+	                <#else>
+	                	暂无数据
+		            </#if>
+		        </div>
+		    </div>
+		</div>
+		
+	</div>
+</div>
+<script>
+let volunteerOperationCodes;
+	<#if pages??>
+		initTable({
+			modelName: 'volunteer',
+			curr: '${pages.currentPage!1}',
+			totalPage: '${pages.totalPageNum!1}',
+			totalCount: '${pages.totalCount!1}',
+			limit: '${pages.limit!10}',
+			limits: [12, 24, 36, 48, 60]
+		});
+	</#if>
+	
+	<#if operationCodes??>
+	volunteerOperationCodes = '${operationCodes}';
+	</#if>
+	
+	VolunteerManage.init({scope:'${scope!''}',operationCodes:volunteerOperationCodes});
+</script>

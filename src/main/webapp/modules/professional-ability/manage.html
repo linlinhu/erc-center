@@ -1,0 +1,298 @@
+<style>
+	.professional-ability-open .item {
+		margin:2px 0;
+		
+	}
+	.professional-ability-open .item:nth-child(4n),
+	.professional-ability-open .item:nth-child(4n+1) {
+		color:#5a98de;
+	}
+</style>
+<div class="wrapper-content professional-ability">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="ibox float-e-margins">
+		        <div class="ibox-title">
+		            <h5>人员技能分类</h5>
+		            <div class="ibox-tools">
+		            	<@codeValidation codes=operationCodes operationCode="add">
+		                <a class="btn btn-primary" href="javascript:professionalAbility.add()" alt="添加分类" title="添加分类">
+		                    <i class="fa fa-plus"></i>
+		                </a>
+		                </@codeValidation>
+		            </div>
+		        </div>
+		        <div class="ibox-content">
+		        	<@codeValidation codes=operationCodes operationCode="search">
+		        	<div class="filter-line">
+	                	<form method="get" class="dr-search-form" id="professional-ability-searchform">
+                            <input placeholder="按分类名称查询" class="form-control" type="text" name="name" value="${name!''}" role="user-params">
+                            <button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+	                 	</form>
+	                </div>
+	                </@codeValidation>
+		            <table class="footable table table-stripped toggle-arrow-tiny" id="authorization-table" data-page-size="100" data-paging="false">
+		                <thead>
+	                        <tr>
+	                        	<th>技能分类名称</th>
+	                            <th data-toggle="true" data-sort-ignore="true">分类统计</th>
+	                            <th data-sort-ignore="true">操作</th>
+	                        </tr>
+						</thead>
+						<tbody>
+							<#if pages.resultList?? && pages.resultList?size gt 0>
+								<#list pages.resultList as d>
+									<tr>
+										<td>${d.name!'-'}</td>
+			                    		<td><a href="javascript: void(0)" title="分类统计" class="statistics" data-code="${d.code}"  data-name="${d.name}"><i class="fa fa-list text-navy"></td>
+			                    		<td>
+			                    			<@codeValidation codes=operationCodes operationCode="edit">
+			                    				<a href="javascript: professionalAbility.edit({name:'${d.name}',code:'${d.code}',groupId:'${d.groupId}',id:'${d.id}'})" alt="编辑" title="编辑"><i class="fa fa-pencil text-navy">&nbsp;</i></a>&nbsp;
+			                    			</@codeValidation>
+			                    			<@codeValidation codes=operationCodes operationCode="remove">
+			                    				<a href="javascript: void(0)" alt="删除" title="删除" class="remove" data-id="${d.id}"><i class="fa fa-trash text-navy">&nbsp;</i></a>&nbsp;
+			                    			</@codeValidation>
+			                    		</td>
+			                    	</tr>
+								</#list>
+							<#else>
+								<tr><td>暂无数据</td></tr>
+							</#if>
+	                    </tbody>
+		            </table>
+		            <div class="text-right" id="professional-ability-page"></div>
+		        </div>
+		    </div>
+		</div>
+		
+	</div>
+</div>
+<div class="row hide" id="professional-ability-add" style="margin:0">
+	<div class="col-sm-12">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-content" style="border:0" id="professional-ability-view"></div>
+		</div>
+	</div>
+</div>
+<script id="professionalAbilityTpl" type="text/html">
+				<form method="get" class="form-horizontal" id="professional-ability-form">
+					<input type="hidden" name="id" role="user-params">
+			    	<div class="form-group">
+			        	<label class="col-sm-3 control-label">职能分类名称</label>
+			            <div class="col-sm-9">
+							<input class="form-control input-choose" type="text" name="name" value="" role="user-params">
+			        	</div>
+			    	</div>
+					<div class="form-group">
+			        	<label class="col-sm-3 control-label">职能分类code</label>
+			            <div class="col-sm-9">
+							<input class="form-control input-choose" type="text" name="code" value="" role="user-params">
+			        	</div>
+			    	</div>
+			    	<div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="submit">保存</button>
+                        </div>
+                    </div>
+				</form>
+</script>
+<div class="hide" id="statisticsPanel" style="margin:0">
+	<div class="col-sm-12">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-content" style="border:0" id="statistics-view"></div>
+		</div>
+	</div>
+</div>
+<script id="statisticsDataTpl" type="text/html">
+<div class="row">
+	<div class="col-sm-12" style="margin:5px 0;font-size:16px;">平台中包含{{d.totalCount}}名{{d.name}}</div>
+	{{# if(d.resultList && d.resultList.length > 0){ }}
+		{{# layui.each(d.resultList, function(index, item){ }}
+			<div class="col-sm-6 item">{{item.realName}} ({{item.mobile}})</div>
+		{{# }); }}
+	{{# }  else { }}
+	 	暂无数据	
+	{{# } }}
+</div>
+{{# if(d.resultList && d.resultList.length > 0){ }}
+	<div class="text-right" id="pro-ability-class-page"></div>
+{{# } }}
+</script>
+
+<script>
+<#if pages??>
+	initTable({
+		modelName: 'professional-ability',
+		curr: '${pages.currentPage!1}',
+		totalPage: '${pages.totalPageNum!1}',
+		totalCount: '${pages.totalCount!1}',
+		limit: '${pages.limit!10}'
+	});
+</#if>
+let PAGroupId = '${groupId!''}';
+var	professionalAbility = (function(){
+	let groupCode = 'pro-ability-class',
+		itemCode,itemName,groupId;
+	let init = function(data){
+		let moduleName = 'professional-ability';
+		
+		groupId = data.groupId;
+		$('.' + moduleName + ' .statistics').on('click',function(){
+			itemCode = $(this).attr('data-code'),
+			itemName = $(this).attr('data-name');
+			ProfessionalAbilityInterface.getProAbilityClassPage({code:itemCode},function(res){
+				console.log('res',res)
+				res.name = itemName;
+				statistics(res);
+			});
+			
+		});
+		$('.' + moduleName + ' .remove').on('click',function(){
+			let id = $(this).attr('data-id');
+			operation({
+				moduleName: 'professional-ability', 
+				oper: 'remove', 
+				params: {id: id}
+			},function(){
+				goPage('index');
+				layer.msg('删除成功',{icon: 6, time: 2000})
+			})
+		});
+		
+	},
+	add = function(){
+		showForm({});
+	};
+	edit = function(data){
+		showForm(data);
+	},
+	showForm = function(data){
+		let tpl = professionalAbilityTpl.innerHTML,
+			view;
+		lwIndex = layer.open({
+			type : 1,
+			title : data.id?'编辑职能分类':'添加职能分类',
+			shadeClose: false,
+			closeBtn: 1, 
+			anim: 2,
+			skin : 'layui-layer-rim', //加上边框
+			area : [ '600px', '400px' ], //宽高
+			content : '<div class="professional-ability-open">' + $('#professional-ability-add').html() + '</div>',
+			end: function() {
+				layer.close(lwIndex);
+			}
+		});
+		view = $('.professional-ability-open #professional-ability-view');
+		laytpl(tpl).render(data, function(html){
+			view.html(html);
+			if(data.id){
+				CommonUtil.formDataSetAndGet({container:'#professional-ability-form',data:data})
+			};
+			$('#professional-ability-form').validate({
+			    rules: {
+			        name:{
+			            required: true,
+			            rangelength:[1,50],
+			            stringCheck2: true
+			        },
+			        code:{
+			        	required: true,
+			            rangelength:[1,20],
+			            isEnglish: true
+			        }
+			    },
+			    messages: {
+			        name:{
+			        	required: icon+'请填写职能分类名称',
+			        	rangelength: icon+'输入长度不能超过50个字符',
+			        	rangelength: icon+'只能输入中文、英文和数字'
+			        },
+			        code:{
+			        	required: icon + '请填写职能分类code',
+			        	rangelength: icon + '输入长度不能超过20个字符',
+			        	isEnglish: icon + '只能输入英文字符'
+			        }
+			    },
+			    submitHandler:function(form){
+			    	let formData = $(form).serializeObject();	
+			    	formData.value = formData.name;
+			    	formData.valueType = 'string';
+			    	formData.groupId = groupId;
+			    	console.log('formData',formData)
+			    	operation({
+						moduleName: 'professional-ability',
+						oper: 'save',
+						params: {
+							data: JSON.stringify(formData)
+						}
+					}, function(res) {
+				    	goPage('index');
+						layer.msg('保存成功！', {icon: 6,time: 2000});
+					});
+			    }    
+			});
+		});
+	},
+	statistics = function(data){
+		let tpl = statisticsDataTpl.innerHTML,
+		view;
+		lwIndex = layer.open({
+			type : 1,
+			title : '分类统计',
+			shadeClose: false,
+			closeBtn: 1, 
+			anim: 2,
+			skin : 'layui-layer-rim', //加上边框
+			area : [ '600px', '525px' ], //宽高
+			content : '<div class="professional-ability-open">' + $('#statisticsPanel').html() + '</div>',
+			end: function() {
+				layer.close(lwIndex);
+			}
+		});
+		view = $('.professional-ability-open #statistics-view');
+		laytpl(tpl).render(data, function(html){
+			view.html(html);
+			laypage.render({
+				elem: 'pro-ability-class', //注意，这里的 test1 是 ID，不用加 # 号
+				count: data.totalCount, //数据总数 //从服务端得到
+				limit: data.limit,
+				curr: data.currentPage,
+				theme: '#0069b6',
+			  	layout: ['count', 'prev', 'page', 'next', 'skip'],
+				jump : function(obj, first) {
+					if(!first) {
+						ProfessionalAbilityInterface.getProAbilityClassPage({code:itemCode},function(res){
+							console.log('res',res)
+							res.name = itemName;
+							statistics(res);
+						});
+					}
+				}
+			});
+			/* pageList({
+				modelName: 'pro-ability-class',
+				totalPage: data.totalPageNum,
+				totalCount: data.totalCount,
+				limit: data.limit,
+				curr: data.currentPage,
+				layout: ['count', 'prev', 'page', 'next', 'skip'],
+				}, function(obj) {
+					ProfessionalAbilityInterface.getProAbilityClassPage({code:itemCode},function(res){
+						console.log('res',res)
+						res.name = itemName;
+						statistics(res);
+					});
+					
+			}); */
+		});
+	};
+	return {
+		init: init,
+		add: add,
+		edit: edit,
+	};
+}())
+console.log('groupId','${groupId}')
+professionalAbility.init({groupId:PAGroupId});
+</script>

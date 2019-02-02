@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>银玺·应急救援人力资源管理系统</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+	
+    <!--[if lt IE 8]>
+    <script>
+        alert('H+已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+    </script>
+    <![endif]-->
+	<link href="${base}img/favicon.ico" rel="shortcut icon">
+    <link href="${base}css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="${base}css/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="${base}css/animate.css" rel="stylesheet">
+    <link href="${base}css/index.css" rel="stylesheet">
+    <link href="${base}css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="${base}css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="${base}css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="${base}css/plugins/periodsPicker/periodsPicker.css" rel="stylesheet">
+    <link href="${base}js/plugins/layui/css/layui.css" rel="stylesheet">
+    <link href="${base}js/plugins/layer/laydate/theme/default/laydate.css" rel="stylesheet">
+    <link href="${base}css/plugins/colorPicker/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <script src="${base}js/plugins/layer/laydate/laydate.js"></script>
+    
+    <link href="${base}css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="${base}css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <link href="${base}css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="${base}css/plugins/webuploader/webuploader.css" rel="stylesheet" type="text/css">
+    <!-- <link href="${base}css/modules/product/common.css" rel="stylesheet"> -->
+    
+    <link href="${base}css/plugins/labels/labels.css" rel="stylesheet">
+    <link href="${base}css/style.css" rel="stylesheet">
+    <link href="${base}css/plugins/ztree/awesomeStyle/awesome.css" rel="stylesheet">
+    <!-- 进度条 -->
+    <link href="${base}css/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
+    <link href="${base}css/plugins/ionRangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+    
+    <!--自定义  -->
+    <link href="${base}css/modules/team.css" rel="stylesheet">
+    
+</head>
+<body class="fixed-sidebar full-height-layout">
+	<div class="fixed-loading" style="position: fixed;left: 0;top: 0;right: 0;bottom: 0;z-index:9999"></div>
+    <div id="wrapper">
+    	<nav class="navbar navbar-static-top" role="navigation">
+        	<div class="row">
+				<div class="col-sm-8 col-xs-12">
+					<div class="sys-title">
+						<i class="img-icon logo" style="background-image: url(img/logo.png)"></i>
+						<span>银玺·应急救援人力资源管理系统</span></div>
+				</div>
+				<div class="col-sm-4 col-xs-12">
+					<div class="sys-profile text-right">
+						<span id="personNickName">admin</span>
+						<i class="img-icon head-portrait" style="background-image: url(img/male.png)"></i>
+						<div class="btn-group">
+							<i class="dropdown fa fa-caret-down text-navy"  data-toggle="dropdown"></i>
+							<ul role="user-oper" class="dropdown-menu dropdown-menu-right">
+		                        <li class="logout"><a>注销</a> </li>
+		                    </ul>
+						</div>
+					</div>
+				</div>
+        	</div>
+        </nav>
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                	<#if userDetail.userType==1>
+                    <li>
+                        <a class="J_menuItem" href="gis">
+                            <i class="fa fa-bullseye text-primary"></i> 
+                            <span class="nav-label">应急力量GIS监控</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="J_menuItem" href="region">
+                            <i class="fa fa-crosshairs text-primary"></i> 
+                            <span class="nav-label">网格管理</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-users text-primary"></i> 
+                            <span class="nav-label">应急力量管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                        	 <li><a class="J_menuItem" href="volunteer-procession">应急队伍管理</a></li>
+                        	 <li><a class="J_menuItem" href="major-team">专业应急力量</a></li>
+                        	 <li><a class="J_menuItem" href="enterprise-team">企业应急力量</a></li>
+                        	 <li><a class="J_menuItem" href="volunteer-team">社会应急力量</a></li>
+                             <li><a class="J_menuItem" href="volunteer">应急志愿者招募及甄选</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-tasks text-primary"></i> 
+                            <span class="nav-label">培训管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                         <ul class="nav nav-second-level">
+                        	 <li><a class="J_menuItem" href="training-plan">应急培训</a></li>
+                        	 <li><a class="J_menuItem" href="cost-sta">培训费用</a></li>
+                        </ul>
+                    </li>
+                    <li class="hide">
+                    	<a href="#">
+                            <i class="fa fa-link text-primary"></i> 
+                            <span class="nav-label">事件线索中心</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                             <li><a class="J_menuItem" href="event-clue-summary">线索汇总</a></li>
+                             <li><a class="J_menuItem" href="event-clue-origin">线索溯源追踪</a></li>
+                        </ul>
+                    </li>
+                    <li class="hide">
+                        <a class="J_menuItem" href="emergency-event">
+                            <i class="fa fa-warning text-primary"></i> 
+                            <span class="nav-label">应急事件</span>
+                        </a>
+                    </li>
+                    <li class="hide">
+                        <a class="J_menuItem" href="emergency-task">
+                            <i class="fa fa-heartbeat text-primary"></i> 
+                            <span class="nav-label">应急任务</span>
+                        </a>
+                    </li>
+                     <li>
+                        <a class="J_menuItem" href="emergency-rehearsal">
+                            <i class="fa fa-shield text-primary"></i> 
+                            <span class="nav-label">应急演练</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-th-large text-primary"></i> 
+                            <span class="nav-label">应急组织管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                         <ul class="nav nav-second-level">
+                        	 <li><a class="J_menuItem" href="org-chart">组织架构管理</a></li>
+                        	 <li><a class="J_menuItem" href="staff">工作人员管理</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                    	<a href="#">
+                            <i class="fa fa-cog text-primary"></i>
+                            <span class="nav-label">配置管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                        	 <li><a class="J_menuItem" href="region">区域网格管理</a></li>
+                        	 <li><a class="J_menuItem" href="professional-ability">人员技能分类</a></li>
+                        	 <li><a class="J_menuItem" href="engine">AI评估引擎</a></li>
+                             <li><a class="J_menuItem" href="data-dic">数据字典</a></li>
+                             <li><a class="J_menuItem hide" href="authorization">授权中心</a></li>
+                             <li><a class="J_menuItem" href="url-manage">第三方系统接口管理</a></li>
+                        </ul>
+                    </li>
+                    <#else>
+						<#if menus??>
+							<#list menus as menu>
+                    		<li>
+                                <a <#if menu.leaf>class="J_menuItem"</#if> href="${menu.leaf?string(menu.code,'#')}">
+                                   	<i class="fa fa-menu-${menu.code} text-primary"></i>
+                                    <span class="nav-label">${menu.name}</span>
+		                            <#if !menu.leaf>
+		                            	<span class="fa arrow"></span>
+									</#if>
+                                </a>
+		                        <#if !menu.leaf>
+		                            <ul  class="nav nav-second-level">
+		                            	<#list menu.children as child>
+                                            <li>
+                                            <a class="J_menuItem" href="${child.code}">
+                                           		
+                                            	<span class="nav-label">${child.name}</span>
+                                            </a>
+                                            </li>
+										</#list>
+                                    </ul>
+
+								</#if>
+                            </li>
+							</#list>
+						</#if>
+					</#if>
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="dashbard-1">
+            <div class="row content-tabs">
+                <button class="roll-nav navbar-minimalize text-navy"><i class="fa fa-bars"></i>
+                </button>
+                <button class="roll-nav roll-left J_tabLeft text-navy"><i class="fa fa-caret-left"></i>
+                </button>
+                <nav class="page-tabs J_menuTabs">
+                    <div class="page-tabs-content">
+                    </div>
+                </nav>
+                <button class="roll-nav roll-right J_tabRight text-navy" style="right:60px"><i class="fa fa-caret-right"></i></button>
+                <div class="btn-group roll-nav roll-right text-navy" style="right:0">
+                    <button class="dropdown J_tabClose"  data-toggle="dropdown">关闭&nbsp;<span class="caret"></span></button>
+                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li class="J_tabCloseAll"><a>关闭全部</a> </li>
+                        <li class="divider"></li>
+                        <li class="J_tabCloseOther"><a>关闭其他</a></li>
+                    </ul>
+                </div>   
+            </div>
+            <div class="row J_mainContent" id="content-main">
+            </div>
+            <div class="footer">
+                <div class="pull-right">Copyright &copy; 2010-2015,www.emininfo.com,All rights reserved  蜀ICP备16033956号</div>
+            </div>
+        </div>
+		<#include "tpl/tpl.html"/>
+		<#include "tpl/fileUploaderTpl.html"/>
+		<#include "tpl/volunteerTpl.html"/>
+		<#include "tpl/volunteerTeamTpl.html"/>
+		<#include "tpl/dd-item-picker-tpl.html"/>
+		<#include "tpl/staffs-choosen-tpl.html"/>
+		<#include "tpl/grid-picker-tpl.html"/>
+		<#include "tpl/procession-picker-tpl.html"/>
+		<#include "tpl/temp-procession-form-tpl.html"/>
+		<#include "tpl/emergencyEventTpl.html"/>
+		<#include "tpl/volunteer-assess-tpl.html"/>
+		<#include "tpl/procession-choosenload-tpl.html"/>
+		<#include "tpl/emergency-rehearsal-tpl.html"/>
+		
+    </div>
+    <!-- 全局js -->
+    <script src="${base}js/jquery-2.1.1.min.js"></script>
+    <!-- 自定义js -->
+	<script src="${base}js/modules/util/common-util.js"></script>
+	<script type="text/javascript">
+		var base = '${base}',
+			icon = '<i class="fa fa-times-circle"></i>';
+		CommonUtil.initGlobalParams('${g_token!""}', '${g_ecmId!""}', '${g_ecmName!""}', '<@obj2json obj=userDetail ></@obj2json>');
+	</script>
+	<script src="http://api.map.baidu.com/api?v=2.0&ak=YXCZieRrBD8dAfXj7eUp5oF4EA6UAIrl"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script> 
+	<script src="${base}js/GeoUtils.js"></script>
+    <script src="${base}js/jquery.cityselect.js"></script>
+	<script src="${base}js/plugins/echarts/echarts.min.js"></script>
+	<script src="${base}js/plugins/echarts/extension/bmap.min.js"></script>
+	<script src="${base}js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="${base}js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="${base}js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="${base}js/plugins/layer/layer.min.js"></script>
+	<script src="${base}js/plugins/layui/layui.js" ></script>
+	<script src="${base}js/plugins/jsKnob/jquery.knob.js"></script>
+	
+    
+    <script src="${base}js/hplus.js?v=3.2.0"></script>
+    <script src="${base}js/contabs.js"></script>
+    <script src="${base}js/emin/common.js"></script>
+    <script src="${base}js/emin/emin.gdmap.js"></script>
+    <!-- 第三方插件 -->
+    <script src="${base}js/plugins/pace/pace.min.js"></script>
+    <script src="${base}js/plugins/footable/footable.all.min.js"></script>
+    <script src="${base}js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="${base}js/plugins/validate/messages_zh.min.js"></script>
+    <script src="${base}js/plugins/validate/compatible_bootstrap.js"></script>
+    <script src="${base}js/plugins/validate/validate_method.js"></script>
+    <script src="${base}js/plugins/iCheck/icheck.min.js"></script>
+	<script src="${base}js/plugins/periodsPicker/periodsPicker.js" ></script>
+	<script src="${base}js/plugins/colorPicker/bootstrap-colorpicker.min.js" ></script>
+    <!-- CHOSEN -->
+    <script src="${base}js/plugins/chosen/chosen.jquery.js" ></script>
+    <!-- Steps -->
+    <script src="${base}js/plugins/steps/jquery.steps.min.js" ></script> 
+    <!-- Switchery -->
+    <script src="${base}js/plugins/switchery/switchery.js"></script>
+    <!-- ztree -->
+    <script src="${base}js/plugins/ztree/jquery.ztree.core.js"></script>
+	<script src="${base}js/plugins/ztree/jquery.ztree.excheck.js"></script>
+	<script src="${base}js/plugins/ztree/jquery.ztree.exedit.js"></script>
+	<script src="${base}js/plugins/webuploader/webuploader.js"></script>
+    <script src="${base}js/plugins/webuploader/upload.js"></script>
+    <script src="${base}js/plugins/labels/labels.js" ></script>
+    <!-- emin封装js -->
+    <script src="${base}js/emin/dataLoad.js"></script>
+    <script src="${base}js/emin/dataChosen.js"></script>
+    <script src="${base}js/emin/emin.ztree.js"></script>
+    <script src="${base}js/emin/emin.multi-choosen.js"></script>
+    <!-- 进度条 -->
+    <script src="${base}css/plugins/ionRangeSlider/js/ion.rangeSlider.js"></script>
+    
+	<script src="${base}js/modules/interfaces/authorization-interface.js"></script>
+	<script src="${base}js/modules/interfaces/real-time-clue-interface.js"></script>
+	<script src="${base}js/modules/interfaces/data-dic-interface.js"></script>
+	<script src="${base}js/modules/interfaces/region-interface.js"></script>
+	<script src="${base}js/modules/interfaces/staff-interface.js"></script>
+	<script src="${base}js/modules/interfaces/org-chart-interface.js"></script>
+	<script src="${base}js/modules/interfaces/volunteer-team-interface.js"></script>
+	<script src="${base}js/modules/interfaces/volunteer-procession-interface.js"></script>
+	<script src="${base}js/modules/interfaces/volunteer-interface.js"></script>
+	<script src="${base}js/modules/interfaces/training-plan-interface.js"></script>
+	<script src="${base}js/modules/interfaces/finance-interface.js"></script>
+	<script src="${base}js/modules/interfaces/cost-sta-interface.js"></script>
+	<script src="${base}js/modules/interfaces/emergency-event-interface.js"></script>
+	<script src="${base}js/modules/interfaces/professional-ability-interface.js"></script>
+	<script src="${base}js/modules/interfaces/emergency-rehearsal-interface.js"></script>
+	<script src="${base}js/modules/interfaces/temp-procession-interface.js"></script>
+	
+	<script src="${base}js/modules/tpls/dd-item-picker-tpl.js"></script>
+	<script src="${base}js/modules/tpls/staffs-choosen-tpl.js"></script>
+	<script src="${base}js/modules/tpls/grid-picker-tpl.js"></script>
+	<script src="${base}js/modules/tpls/procession-picker-tpl.js"></script>
+	<script src="${base}js/modules/tpls/volunteer-assess-tpl.js"></script>
+	<script src="${base}js/modules/tpls/temp-procession-form-tpl.js"></script>
+	<script src="${base}js/modules/tpls/procession-choosenload-tpl.js"></script>
+	<script src="${base}js/modules/tpls/emergency-rehearsal-tpl.js"></script>
+    
+	<script src="${base}js/modules/views/data-dic-form.js"></script>
+	<script src="${base}js/modules/views/real-time-clue-manage.js"></script>
+	<script src="${base}js/modules/views/gis-manage.js"></script>
+	<script src="${base}js/modules/views/org-chart-manage.js"></script>
+	<script src="${base}js/modules/views/region-grid-manage.js"></script>
+	<script src="${base}js/modules/views/training-plan-manage.js"></script>
+	<script src="${base}js/modules/views/volunteer-manage.js"></script>
+	<script src="${base}js/modules/views/volunteer-form.js"></script>
+	<script src="${base}js/modules/views/volunteer-procession-manage.js"></script>
+	<script src="${base}js/modules/views/volunteer-team-manage.js"></script>
+	<script src="${base}js/modules/views/emergency-event-form.js"></script>
+	<script src="${base}js/modules/views/emergency-event-manage.js"></script>
+	<script src="${base}js/modules/views/emergency-rehearsal-manage.js"></script>
+	<script src="${base}js/modules/views/index.js"></script>
+	
+	<script>
+		IndexInit.init();
+	</script>
+</body>
+
+</html>

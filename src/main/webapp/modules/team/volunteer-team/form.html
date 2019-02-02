@@ -1,0 +1,259 @@
+<style>
+	.form-control-icon {
+		font-size: 26px;
+		margin: 6px 0;
+		cursor: pointer;
+	}
+	.dd-items-edit-panel {
+		padding: 10px 0;
+	}
+	.dd-items-edit-panel .opers {
+		margin-bottom: 10px;
+	}
+	.dd-items-edit-panel ul.normal-items li {
+		background: rgb(243, 245, 245);
+		padding: 5px;
+		position: relative;
+		margin-bottom: 3px;
+	}
+	
+	.dd-items-edit-panel ul.normal-items li div.rgt-opers {
+		position: absolute;
+		right: 10px;
+		top: 5px;
+		display: none;
+	}
+	
+	.dd-items-edit-panel ul.normal-items li:hover div.rgt-opers {
+		display: block;
+	}
+</style>
+<div class="wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5><#if info??>编辑<#else>添加</#if>志愿者</h5>
+                    <div class="ibox-tools">
+                        <a class="btn btn-white btn-bitbucket btn-xs" href="javascript: goPage('index')">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+               		 <form method="get" class="form-horizontal" id="${formId}">
+             		 	<input type="hidden" name="id">
+             		 	<input type="hidden" name="groupId">
+             		 	<input type="hidden" name="userId">
+             		 	<div class="form-group">
+                            <label class="col-sm-10 col-sm-offset-2 control-label text-info" style="text-align: left;">重要凭证</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*手机号</label>
+                            <div class="col-sm-10">
+								<input class="form-control" placeholder="输入手机号" type="text" name="mobile" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*身份证号</label>
+                            <div class="col-sm-10">
+								<input class="form-control" placeholder="输入身份证号" type="text" name="idnumber" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-10 col-sm-offset-2 control-label text-info" style="text-align: left;">基本信息</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*姓名</label>
+                            <div class="col-sm-10">
+								<input class="form-control" placeholder="输入姓名" type="text" name="realName" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*性别</label>
+                            <div class="col-sm-10">
+                            	<label class="checkbox-inline i-checks"><input type="radio" value="0" name="gender" checked> <i></i> 男</label>
+                            	<label class="checkbox-inline i-checks"><input type="radio" value="1" name="gender"> <i></i> 女</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户头像</label>
+                            <div class="col-sm-10">
+                            	<div class="upload-input">
+                            		<input class="form-control" type="hidden" name="picUrls">
+                            		<i class="fa fa-plus text-navy addImg"></i>
+                            		<p class="upload-tips">建议上传长宽比例为1:1的图片</p>
+                            	</div>
+								<div class="upload-img hide">
+									<img class="pro-img"/>
+									<span class="removeImg"><i class="fa fa-times"></i></span>
+								</div>
+                            </div> 
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">民族</label>
+                            <div class="col-sm-10">
+								
+                            	<div class="form-control nation-picker">选择所属民族</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*所属区域</label>
+                            <div class="col-sm-10">
+								<input class="form-control region-choosen-click" name='regionName' type="text" readOnly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">*通讯地址</label>
+                            <div class="col-sm-10">
+								<input class="form-control" type="text" name="contactAddr" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-10 col-sm-offset-2 control-label text-info" style="text-align: left;">备选信息</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">学历</label>
+                            <div class="col-sm-10">
+								<div class="form-control education-picker">选择最高学历</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">职业</label>
+                            <div class="col-sm-10">
+                            	<div class="form-control jobtitle-picker">选择职业</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">语言能力</label>
+                            <div class="col-sm-10">
+								
+                            	<div class="form-control languageskills-picker">选择语言能力</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-10 col-sm-offset-2 control-label text-info" style="text-align: left;">服务信息</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">职能分类</label>
+                            <div class="col-sm-10">
+                            	<div class="form-control proAbilityClasses-picker">选择职能分类</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">服务时间</label>
+                            <div class="col-sm-10">
+                            	<div class="form-control servicetimes-picker">选择服务时间</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">知识技能</label>
+                            <div class="col-sm-10">
+                            	<div class="form-control knowledgeskills-picker">选择服务意向</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">服务意向</label>
+                            <div class="col-sm-10">
+                            	<div class="form-control serviceintentions-picker">选择服务意向</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">专业领域</label>
+                            <div class="col-sm-10">
+                            	<div class="form-control servicefields-picker">选择专业领域</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let vfInfo = {},
+	formId = '#'+'${formId}';
+	console.log('formId',formId);
+$(formId + ' input[name="groupId"]').val('${groupId}');
+<#if info??>
+$(formId + ' input[name="id"]').val('${info.id}');
+$(formId + ' input[name="userId"]').val('${info.userId!""}');
+$(formId + ' input[name="mobile"]').val('${info.mobile}');
+$(formId + ' input[name="idnumber"]').val('${info.idnumber}');
+$(formId + ' input[name="realName"]').val('${info.realName}');
+$(formId + ' input[name="gender"][value="${info.gender}"]').attr('checked', true);
+<#if info.contactAddr??>
+let regionValue = {
+		"cityCode": '${info.contactAddr.cityCode!""}',
+		"cityName": '${info.contactAddr.cityName!""}',
+		"provinceCode": '${info.contactAddr.provinceCode}',
+		"provinceName": '${info.contactAddr.provinceName}',
+		"cityFirstLevelCode": '${info.contactAddr.cityFirstLevelCode}',
+		"cityFirstLevelName": '${info.contactAddr.cityFirstLevelName}',
+	},
+	regionName = '${info.contactAddr.provinceName}'+ '${info.contactAddr.cityName!""}' + '${info.contactAddr.cityFirstLevelName}';
+	regionValue.fullAddress = regionName;
+	$(formId + ' .region-choosen-click').val(regionName);
+	$(formId + ' .region-choosen-click').attr('data-value',JSON.stringify(regionValue));
+
+$(formId + ' input[name="contactAddr"]').val('${info.contactAddr.endPointAddress}');
+</#if>
+<#if info.volunteerProcession??>
+vfInfo.volunteerProcession = JSON.parse('<@obj2json obj=info.volunteerProcession ></@obj2json>');
+</#if>
+
+<#if info.nation??>
+vfInfo.nation = JSON.parse('<@obj2json obj=info.nation ></@obj2json>');
+</#if>
+
+<#if info.education??>
+vfInfo.education = JSON.parse('<@obj2json obj=info.education ></@obj2json>');
+</#if>
+<#if info.jobTitle??>
+vfInfo.jobTitle = JSON.parse('<@obj2json obj=info.jobTitle ></@obj2json>');
+</#if>
+<#if info.languageSkills??>
+vfInfo.anguageSkills = JSON.parse('<@obj2json obj=info.languageSkills ></@obj2json>');
+</#if>
+
+<#if info.serviceTime??>
+vfInfo.serviceTimes = JSON.parse('<@obj2json obj=info.serviceTime ></@obj2json>');
+</#if>
+<#if info.knowledgeSkills??>
+vfInfo.knowledgeSkills = JSON.parse('<@obj2json obj=info.knowledgeSkills ></@obj2json>');
+</#if>
+<#if info.serviceIntentions??>
+vfInfo.serviceIntentions = JSON.parse('<@obj2json obj=info.serviceIntentions ></@obj2json>');
+</#if>
+<#if info.serviceFields??>
+vfInfo.serviceFields = JSON.parse('<@obj2json obj=info.serviceFields ></@obj2json>');
+</#if>
+<#if info.avatar??>
+vfInfo.avatar = JSON.parse('<@obj2json obj=info.avatar ></@obj2json>');
+</#if>
+<#if info.proAbilityClasses??>
+vfInfo.proAbilityClasses = JSON.parse('<@obj2json obj=info.proAbilityClasses ></@obj2json>');
+</#if>
+
+</#if>
+vfInfo.formEl = formId;
+vfInfo.groupId = '${groupId}';
+vfInfo.groupType = '${groupType}';
+if(vfInfo.groupType == 2){
+	let volunteerTeamFormFn = new VolunteerForm();
+	volunteerTeamFormFn.init(vfInfo);
+} else if(vfInfo.groupType == 3){
+	let majorTeamFormFn = new VolunteerForm();
+	majorTeamFormFn.init(vfInfo);
+} else if(vfInfo.groupType == 4){
+	let enterpriseTeamFormFn = new VolunteerForm();
+	enterpriseTeamFormFn.init(vfInfo);
+}
+
+</script>

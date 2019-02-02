@@ -1,0 +1,63 @@
+
+		<table class="footable table table-stripped toggle-arrow-tiny to-be-rehearsal"
+			id=real-ee-table data-page-size="10"
+			data-paging="false">
+			<thead>
+				<tr>
+					<th data-toggle="true">演练名称</th>
+					<th>分类</th>
+					<th>区域</th>
+					<th>日期</th>
+					<th>演练队伍</th>
+					<th data-hide="all">指挥员</th>
+					<th data-hide="all">演练地址</th>
+					<th data-hide="all">演练简介</th>
+					<th data-sort-ignore="true">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#if over == 'false'>
+				<#if pages.resultList?? && pages.resultList?size gt 0 >
+					<#list pages.resultList as d>
+						<tr>
+							<td>${d.title}</td>
+							<td>${d.eventTypeName}</td>
+							<td>${d.regionName}</td>
+							<td>${d.startTime?number_to_datetime}-${d.endTime?number_to_datetime}</td>
+							<td>
+								<a class="relate-procession text-primary" data-id="${d.id}" href="javascript:;" title="关联应急队伍"><i class="fa fa-link">&nbsp;队伍</i></a>	
+							</td>
+							<td>
+								<#if d.commander?? && d.commander?size gt 0>
+									<#list d.commander as c>
+										${c.chargePersonName}&nbsp;&nbsp;&nbsp;
+									</#list>
+								<#else>
+									暂无
+								</#if>
+							</td>
+							<td>${d.address}</td>
+							<td>
+								<#if d.description?? && d.description?length gt 0>
+									${d.description}
+								<#else>
+									暂无
+								</#if>
+							</td>
+							<td> 
+								<@codeValidation codes=operationCodes operationCode="edit">
+								<a href="javascript:goPage('form',{id:${d.id}});" title="编辑"><i class="fa fa-pencil text-primary"></i></a>&nbsp;
+								</@codeValidation>
+								<@codeValidation codes=operationCodes operationCode="remove-tb">
+								<a href="javascript:void(0);" title="删除" class="remove" data-id="${d.id}"><i class="fa fa-trash text-primary"></i></a>&nbsp;
+								</@codeValidation>
+							</td>
+						</tr>
+					</#list>
+		        <#else>
+		            <tr><td>暂无数据</td></tr>
+			    </#if>
+			    </#if>
+			</tbody>
+		</table>
+

@@ -1,0 +1,107 @@
+
+<div class="wrapper-content team-content major-team">
+	<div class="row">
+		<div class="col-sm-2 teamList">
+			<nav class="">
+                <div class="ibox-title">
+		            <h5><i class="fa fa-graduation-cap text-primary"></i> 团队列表</h5>
+		        </div>
+		         <div class="ibox-content team-title">
+		        <#if pages.resultList?? && pages.resultList?size gt 0 >
+			        <#list pages.resultList as d>
+			        	<p class="title" data-id="${d.id}">${d.groupName}</p>
+		            </#list>
+	            <#else>
+                	暂无数据
+	            </#if>
+	            </div>
+	            <div class="team-btns">
+	            	<@codeValidation codes=operationCodes operationCode="import-g">
+	            	<div class="importTeam">
+		            	<h5><i class="fa fa-copy text-primary"></i> 批量导入专业团队</h5>
+		            </div>
+		            </@codeValidation>
+		            <@codeValidation codes=operationCodes operationCode="add-g">
+		            <div class="addTeam">
+		            	<h5><i class="fa fa-plus text-primary"></i> 新增专业团队</h5>
+		            </div>
+		            </@codeValidation>
+	            </div>
+	            
+	        </nav>
+		</div>
+		
+		<div class="col-sm-10">
+		    <div class="ibox float-e-margins">
+		    	<p class="tips hide">暂无数据</p>
+		        <div class="ibox-content team-center">
+		        	<div class="row team-des">&nbsp;&nbsp;暂无数据</div>
+		        	<div class="ibox-title">
+			            <h5>志愿者资料</h5> 
+			        </div>
+		        	<div class="filter-line row">
+		        		<@codeValidation codes=operationCodes operationCode="search-v">
+	                	<form method="get" class="dr-search-form col-sm-9" id="major-team-searchform">
+	                		<input class="form-control" type="hidden" name="groupId" value="${groupId!''}" role="user-params">
+	                		<input class="form-control" type="hidden" name="page" value="${page!''}" role="user-params">
+                            <input placeholder="按姓名查询" class="form-control" type="text" name="name" value="${name!''}">
+                            <button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+	                 	</form>
+	                 	</@codeValidation>
+	                 	<div class="col-sm-3 btn-group-change text-right">
+			            	<div class="btn-group-1">
+			            		<@codeValidation codes=operationCodes operationCode="add-v">
+					                <a class="btn btn-primary addVolunteer" alt="添加志愿者" title="添加志愿者">
+					                    <i class="fa fa-plus"></i>
+					                </a>
+				                </@codeValidation>
+				                <@codeValidation codes=operationCodes operationCode="import-v">
+				                <a class="btn btn-primary import-v" href="javascript:void(0)" alt="批量导入" title="批量导入">
+				                    <i class="fa fa-copy"></i>
+				                </a>
+				                </@codeValidation>
+				                <a class="btn btn-primary batch-operation hide" href="javascript:void(0)" alt="批量操作" title="批量操作">
+				                    <i class="fa fa-cogs"></i>
+				                </a>
+			                </div>
+			                <div class="btn-group-2 hide">
+				                <a class="btn btn-primary BatchRemove" alt="批量删除" title="批量删除">
+				                    <i class="fa fa-trash"></i>
+				                </a>
+				                <a class="btn btn-primary changeTeam" alt="变更团队" title="变更团队">
+				                    <i class="fa fa-random"></i>
+				                </a>
+				                <a class="btn btn-primary single-operation" href="javascript:void(0)" alt="返回" title="返回">
+				                    <i class="fa fa-reply"></i>
+				                </a>
+			                </div>
+			            </div>
+	                </div>
+	                <div class="row team-member">&nbsp;&nbsp;暂无数据</div>
+		            <div class="text-right" id="major-team-page"></div>
+		        </div>
+		    </div>
+		</div>
+		
+	</div>
+</div>
+
+<script>
+	let majorTeamOperationCodes = null;
+	<#if operationCodes??>
+	majorTeamOperationCodes = '${operationCodes}';
+	</#if>
+	var majorTeamFn = new VolunteerTeam(),
+	majorTeamOption = {
+		formId:'#volunteerTeamForm',
+		groupType:3,
+		groupTypeName:'专业人员组',
+		moduleName:'major-team',
+		groupId: '${groupId!null}',
+		name: '${name!null}',
+		operationCodes:majorTeamOperationCodes
+	};
+	majorTeamFn.init(majorTeamOption);
+	
+</script>

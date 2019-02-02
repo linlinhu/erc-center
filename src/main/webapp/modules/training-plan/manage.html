@@ -1,0 +1,357 @@
+<style>
+#training-plan-manage .filter-line input {
+	width: 220px !important;
+}
+#training-plan-budget-form .row {
+	margin: 8px;
+}
+#training-plan-budget-form .budget-items,
+#training-plan-cost-form .datas {
+	height: 300px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+.budget-item label {
+	line-height: 30px;
+}
+form.train-costs-form .cost-name{
+	font-weight: bold;
+	font-size: 16px;
+	margin: 0 5px;
+}
+
+form.train-costs-form .cost-budget{
+	font-weight: bold;
+	font-size: 20px;
+	margin: 0 5px;
+}
+
+form.train-costs-form input.cost-actual {
+	width: 100px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 0 5px;
+	font-size: 16px;
+}
+
+form.train-costs-form input.over-budget {
+	color: red;
+	border-color: red;
+	font-weight: bold;
+}
+</style>
+
+<div class="wrapper-content" id="training-plan-manage">
+	<div class="row">
+		<div class="col-sm-12">
+		    <div class="ibox float-e-margins">
+		        <div class="ibox-title">
+		            <h5>应急培训</h5>
+		            <div class="ibox-tools">
+		            	<@codeValidation codes=operationCodes operationCode="add">
+		                <a class="btn btn-primary" href="javascript:void(0)" role="add" alt="添加培训计划" title="添加培训计划">
+		                    <i class="fa fa-plus"></i>
+		                </a>
+		                </@codeValidation>
+		            </div>
+		        </div>
+		        <div class="ibox-content">
+		        	<@codeValidation codes=operationCodes operationCode="search">
+		        	<div class="filter-line">
+	                	<form method="get" class="dr-search-form" id="training-plan-searchform">
+	                		<input class="form-control" type="hidden" name="page" value="${params.page!1}" role="user-params">
+	                		<input class="form-control" type="hidden" name="limit" value="${params.limit!10}" role="user-params">
+	                		<input class="form-control" type="hidden" name="startTime" value="${params.startTime!''}" role="user-params">
+	                		<input class="form-control" type="hidden" name="endTime" value="${params.endTime!''}" role="user-params">
+                            <input placeholder="关键字模糊查询" class="form-control" type="text" name="keyword" value="${params.keyword!''}" role="user-params">
+                            <input type="hidden" name="vpId" value="${params.vpId!''}" role="user-params">
+                            <!-- <input placeholder="关联队伍（单个）过滤" class="form-control volunteer-procession-choosen" type="text" name="vpName" value="${params.vpName!''}" role="user-params" readonly> -->
+                            <input placeholder="日期范围" class="form-control" type="text" id="tps-datePeriod">
+                            <button type="button" class="btn btn-primary" role="submit"><i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-default" role="reset"><i class="fa fa-refresh"></i></button>
+	                 	</form>
+	                </div>
+	                </@codeValidation>
+		            <table class="footable table table-stripped toggle-arrow-tiny" id="training-plan-table" data-page-size="${params.limit!10}" data-paging="false">
+		                <thead>
+	                        <tr>
+	                            <th data-toggle="true" data-sort-ignore="true">培训名称</th>
+	                            <th>培训时间</th>
+	                            <!-- <th>参与队伍</th> -->
+	                            <th>培训地点</th>
+	                            <th>负责人</th>
+	                            <th>状态</th>
+	                            <th>操作</th>
+	                        </tr>
+						</thead>
+						<tbody>
+							<#setting datetime_format='MM-dd HH:mm'>
+							<#if pages.resultList?? && pages.resultList?size gt 0 >
+								<#list pages.resultList as d>
+									<tr>
+										<td>${d.title}</td>
+										<td>${d.startTime?number_to_datetime}-${d.endTime?number_to_datetime}</td>
+										<!-- <td>
+											<#if d.mixTeams?? && d.mixTeams?size gt 0>
+												<#list d.mixTeams as mt>
+													${mt.name}&nbsp;
+												</#list>
+											<#else>
+												-	
+											</#if>
+										</td> -->
+										<td>
+											${d.address}
+										</td>
+										<td>
+											${d.chargePersonName}
+										</td>
+										<td>
+										<#if d.activeStatus == 1>
+											未开始
+										<#elseif d.activeStatus == 2>
+											进行中
+										<#elseif d.activeStatus == 3>
+											已结束
+										</#if>	
+										</td>
+										<td>
+											<#if d.activeStatus = 1>
+											<@codeValidation codes=operationCodes operationCode="budget">
+											<a href="javascript: void(0);" role="budget" title="增加培训计划预算" data-id="${d.id}" data-name="${d.title}"><i class="fa fa-money text-navy">&nbsp;</i></a>&nbsp;
+											</@codeValidation>
+											<@codeValidation codes=operationCodes operationCode="edit">
+											<a href="javascript: void(0);" role="edit" title="编辑培训计划" data-id="${d.id}"><i class="fa fa-pencil text-navy">&nbsp;</i></a>&nbsp;
+											</@codeValidation>
+											<@codeValidation codes=operationCodes operationCode="remove">
+											<a href="javascript: void(0);" role="remove" title="删除培训计划" data-id="${d.id}"><i class="fa fa-trash text-navy">&nbsp;</i></a>&nbsp;
+											</@codeValidation>
+											</#if>
+											<#if d.activeStatus = 3>
+											<@codeValidation codes=operationCodes operationCode="feedback">
+											<a href="javascript: void(0);" role="feedback" title="反馈/总结" data-id="${d.id}"><i class="fa fa-file-text text-navy">&nbsp;</i></a>&nbsp;
+											</@codeValidation>
+											<@codeValidation codes=operationCodes operationCode="assess">
+											<a href="javascript: void(0);" role="assess" title="评估" data-id="${d.id}"><i class="fa fa-star-half-o text-navy">&nbsp;</i></a>&nbsp;
+											</@codeValidation>
+											</#if>
+										</td>
+									</tr>
+								</#list>
+		                	<#else>
+		                		<tr ><td colspan="7">暂无数据</td></tr>
+			            	</#if>
+	                    </tbody>
+		            </table>
+		            <div class="text-right" id="training-plan-page"></div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<!-- 培训计划新增、编辑表单 -->
+<div class="wrapper-content hide" id="training-plan-form"></div>
+<script type="text/html" id="training_plan_form_data">
+<div class="row">
+		<div class="col-sm-12">
+			<form method="get" class="form-horizontal">
+			 	<input type="hidden" name="id" role="user-params">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">培训名称</label>
+					<div class="col-sm-9">
+						<input class="form-control" placeholder="输入培训计划名称" type="text" name="title" value="" role="user-params">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">所属区域网格</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="hidden" name="regionType" role="user-params">
+						<input class="form-control" type="hidden" name="regionId" role="user-params">
+						<input class="form-control region-grid-choosen" type="text" name="regionName" role="user-params" readOnly placeholder="选择所属区域网格">
+						<!-- <div class="form-control region-grid-choosen">选择所属区域网格</div> -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">参与应急队伍</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="hidden" name="teamIds" role="user-params">
+						<input class="form-control volunteer-procession-choosen" type="text" name="teamNames" role="user-params" readOnly placeholder="选择参与应急队伍">
+						<!-- <div class="form-control volunteer-procession-choosen">选择参与应急队伍</div> -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">负责人</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="hidden" name="chargePersonId" role="user-params">
+						<input class="form-control chargeperson-choosen" type="text" name="chargePersonName" role="user-params" readOnly placeholder="选择一个负责人">
+						<input class="form-control" type="hidden" name="chargePersonMobile" role="user-params">
+						<!-- <div class="form-control chargeperson-choosen">选择一个负责人</div> -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">培训时间</label>
+					<div class="col-sm-9">
+						<input class="form-control" type="hidden" name="startTime" role="user-params">
+						<input class="form-control" type="hidden" name="endTime" role="user-params">
+						<input class="form-control tp-time-period" placeholder="选择培训时间" type="text" name="tpTimePeriod" role="user-params">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">培训地点</label>
+					<div class="col-sm-9">
+						<textarea class="form-control" placeholder="输入培训地点" name="address" role="user-params"></textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label">培训内容</label>
+					<div class="col-sm-9">
+						<textarea class="form-control" placeholder="输入培训内容" name="description" role="user-params"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+				    <div class="col-sm-4 col-sm-offset-3">
+				        <button class="btn btn-primary" type="submit">保存</button>
+				    </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</script>
+<script type="text/html" id="training_plan_Budget_data">
+	<div class="row budget-item">
+		<div class="col-sm-5">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">费用名称</label>
+				<div class="col-sm-8">
+					<input type="hidden" name="itemId" value="{{d.id ? d.id : ''}}">
+					<input class="form-control" placeholder="费用名称" name="itemName" value="{{d.accountTitle ? d.accountTitle : ''}}">
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="col-sm-5 control-label">预计花费（元）</label>
+				<div class="col-sm-7">
+					<input class="form-control" placeholder="预计花费" name="itemBudget" value="{{d.estimatedTotal ? d.estimatedTotal : ''}}">
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-1">
+			<button class="btn btn-circle btn-info" type="button" role="remove-budget-item" data-id="{{d.id ? d.id : ''}}"><i class="fa fa-minus"></i></button>
+		</div>
+	</div>
+</script>
+<!-- 培训计划预算表单 -->
+<div class="wrapper-content hide" id="training-plan-budget-form">
+	<form class="budget-items"></form>
+	<div class="row">
+		<div class="col-sm-12 text-center"><button class="btn btn-info" type="button" role="add-budget-item"><i class="fa fa-plus"></i>添加费用项</button></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 text-right"><button class="btn btn-primary" type="button" role="save">保存</button></div>
+	</div>
+</div>
+<script type="text/html" id="training_plan_cost_datas">
+	{{# if (d.list && d.list.length > 0) { }}
+	<form method="post" class="form-horizontal train-costs-form">
+	<ul class="list-group">
+	{{# layui.each(d.list, function(index, item){ }}
+		<li class="list-group-item text-center">
+		<input type="hidden" name="itemIds" role="user-params" value="{{item.id}}">
+		<input type="hidden" name="itemNames" role="user-params" value="{{item.accountTitle}}">
+		<input type="hidden" name="itemBudgets" role="user-params" value="{{item.estimatedTotal}}">
+		<span class="cost-name text-default">{{item.accountTitle}}</span>预计开销<span class="cost-budget text-success">{{item.estimatedTotal}}</span>元, 实际花销
+		<input class="cost-actual" type="text" name="finalTotals" value="{{item.finalTotal ? item.finalTotal : ''}}">元</li>		
+	{{# }); }}
+	</ul>
+
+	<div class="form-group">
+	    <div class="col-sm-12 text-center">
+	        <button class="btn btn-primary" type="button" role="save">保存</button>
+	    </div>
+	</div>
+	</form>
+	{{# } else { }}
+		暂无预算
+	{{# } }}
+      
+</script>
+<!-- 培训计划实际花销表单 -->
+<div class="wrapper-content hide" id="training-plan-cost-form">
+	<div class="datas"></div>
+	<div class="form-group">
+	    <div class="col-sm-4 col-sm-offset-3">
+	        <button class="btn btn-primary" type="button" role="save">保存</button>
+	    </div>
+	</div>
+</div>
+
+<!-- 培训计划反馈表单-->
+<div class="wrapper-content hide" id="training-plan-feedback-form">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="tabs-container">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#tp-sum-up" aria-expanded="true">培训总结</a></li>
+					<li class=""><a data-toggle="tab" href="#tp-cost-list" aria-expanded="false">费用明细</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="tp-sum-up" class="tab-pane active">
+ 						<div class="panel-body">
+							<form method="post" class="form-horizontal train-feedback-form">
+							<input type="hidden" name="id" role="user-params">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">实到人数</label>
+								<div class="col-sm-9">
+									<input class="form-control" placeholder="输入实到人数" type="text" name="peopleTotal" value="" role="user-params">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">实际培训时长</label>
+								<div class="col-sm-9">
+									<input type="hidden" name="startTime" value="" role="user-params">
+									<input type="hidden" name="endTime" value="" role="user-params">
+									<input class="form-control training-plan-feedback-time-period" placeholder="选择实际培训时间段" type="text" name="tpfTimePeriod" role="user-params">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">培训总结</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" placeholder="输入培训内容" name="summary" role="user-params"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+							    <div class="col-sm-4 col-sm-offset-3">
+							        <button class="btn btn-primary" type="button" role="save">保存</button>
+							    </div>
+							</div>
+            
+							</form>
+						</div>
+					</div>
+					<div id="tp-cost-list" class="tab-pane">
+						<div class="panel-body">
+                              
+         				</div>
+					</div>
+				</div>
+            </div>
+		</div>
+	</div>
+</div>
+<script>
+
+TrainingPlanManage.init();
+
+<#if pages??>
+initTable({
+	modelName: 'training-plan',
+	curr: '${pages.currentPage!1}',
+	totalPage: '${pages.totalPageNum!1}',
+	totalCount: '${pages.totalCount!1}',
+	limit: '${pages.limit!10}'
+});
+</#if>
+</script>

@@ -1,0 +1,35 @@
+<style>
+	#procession-choosenload-panel a.vp-choosen,
+	#procession-choosenload-panel a.temp-vp-create {
+		width: 200px;
+		display: block;
+		padding: 15px;
+		margin: 0 auto;
+		background-color: rgba(36,128,204, .5);
+		color: #fff;
+		text-align: center;
+		cursor: pointer;
+		border-radius: 5px;
+		font-size: 16px;
+	}
+	#procession-choosenload-panel .choosen-lst {
+		height: 200px;
+	}
+</style>
+<div class="wrapper-content hide" id="procession-choosenload-panel">
+	<div class="row">
+		<div class="col-sm-6"><a class="vp-choosen" href="javascript:;">添加已有应急队伍</a></div>
+		<div class="col-sm-6"><a  class="temp-vp-create" href="javascript:;">创建临时应急队伍</a></div>
+		<div class="col-sm-12 text-center" style="padding: 10px 0">
+			提示：你可以添加多个已有应急队伍，或者创建一个临时应急队伍，两种关联方式您只能选择一种。
+		</div>
+	</div>
+	<div class="row" style="margin-top: 10px;">
+		<div class="col-sm-12 no-ppadding">
+			<ul class="choosen-lst list-group"></ul>
+		</div>
+	</div>
+	<div class="opers" style="height: 40px;">
+		<button type="button" class="btn btn-primary" role="choosen-close" style="float: right">确定</button>
+	</div>
+</div>
